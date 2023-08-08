@@ -1,0 +1,76 @@
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;"
+      data-toggle="modal" data-target=".bs-example-modal-lg"
+    >
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table">
+      <thead>
+          <tr>
+              <th>N°</th>
+              <th>Descripcion</th>
+              <th>Año</th>
+              <th>Fecha</th>
+              <th>Titulo</th>
+              <th>Subtitulo</th>
+              <th>Imagenes</th>
+              <th>Editar</th>
+              <th>Publicar</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let noticia of listNoticias">
+              <td>{{noticia.ids}}</td>
+              <td>{{noticia.descripcion}}</td>
+              <td>{{noticia.ano}}</td>
+              <td>{{noticia.fecha}}</td>
+              <td>{{noticia.titulo}}</td>
+              <td>{{noticia.subtitulo}}</td>
+              <td>
+                <button class="btn btn-primary">
+                  <i class="fa fa-solid fa-images"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-warning">
+                  <i class="fa fa-solid fa-pencil"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-danger">
+                  <i class="fa fa-solid fa-upload"></i>
+                </button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myLargeModalLabel">Agregar Noticias</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+              <h4>Overflowing text to show scroll behavior</h4>
+              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-info waves-effect text-left" >Agregar</button>
+          </div>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
