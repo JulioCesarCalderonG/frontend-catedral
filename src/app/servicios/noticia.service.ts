@@ -16,4 +16,7 @@ export class NoticiaService {
   getNoticias(estado:string):Observable<any>{
     return this.http.get(this.url,{params:{estado}})
   }
+  postNoticia(body:FormData):Observable<any>{
+    return this.http.post(this.url,body);
+  }
 }

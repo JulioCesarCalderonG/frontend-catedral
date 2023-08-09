@@ -1,9 +1,8 @@
 <div class="row mb-5 justify-content-end">
   <div class="col-md-4"></div>
   <div class="col-md-4">
-    <button class="btn btn-block btn-success" style="font-weight: bold;"
-      data-toggle="modal" data-target=".bs-example-modal-lg"
-    >
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
       Agregar
       <i class="fa fa-solid fa-plus"></i>
     </button>
@@ -12,65 +11,124 @@
 
 <div class="table-responsive">
   <table class="table">
-      <thead>
-          <tr>
-              <th>N°</th>
-              <th>Descripcion</th>
-              <th>Año</th>
-              <th>Fecha</th>
-              <th>Titulo</th>
-              <th>Subtitulo</th>
-              <th>Imagenes</th>
-              <th>Editar</th>
-              <th>Publicar</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let noticia of listNoticias">
-              <td>{{noticia.ids}}</td>
-              <td>{{noticia.descripcion}}</td>
-              <td>{{noticia.ano}}</td>
-              <td>{{noticia.fecha}}</td>
-              <td>{{noticia.titulo}}</td>
-              <td>{{noticia.subtitulo}}</td>
-              <td>
-                <button class="btn btn-primary">
-                  <i class="fa fa-solid fa-images"></i>
-                </button>
-              </td>
-              <td>
-                <button class="btn btn-warning">
-                  <i class="fa fa-solid fa-pencil"></i>
-                </button>
-              </td>
-              <td>
-                <button class="btn btn-danger">
-                  <i class="fa fa-solid fa-upload"></i>
-                </button>
-              </td>
-          </tr>
-      </tbody>
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Descripcion</th>
+        <th>Año</th>
+        <th>Fecha</th>
+        <th>Titulo</th>
+        <th>Subtitulo</th>
+        <th>Imagenes</th>
+        <th>Editar</th>
+        <th>Publicar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let noticia of listNoticias">
+        <td>{{noticia.ids}}</td>
+        <td>{{noticia.descripcion}}</td>
+        <td>{{noticia.ano}}</td>
+        <td>{{noticia.fecha}}</td>
+        <td>{{noticia.titulo}}</td>
+        <td>{{noticia.subtitulo}}</td>
+        <td>
+          <button class="btn btn-primary" (click)="mostrarImagen(noticia.id)" data-toggle="modal"
+          data-target=".modalImagen">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning">
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger">
+            <i class="fa fa-solid fa-upload"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>
 
-<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h4 class="modal-title" id="myLargeModalLabel">Agregar Noticias</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          </div>
-          <div class="modal-body">
-              <h4>Overflowing text to show scroll behavior</h4>
-              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-info waves-effect text-left" >Agregar</button>
-          </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Noticias</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
       </div>
-      <!-- /.modal-content -->
+      <form [formGroup]="noticiaForm" (ngSubmit)="agregarNoticia()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Titulo</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un titulo"
+              formControlName="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Subtitulo</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un subtitulo"
+              formControlName="subtitulo">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Descripcion</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"
+              formControlName="descripcion"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left"
+            [disabled]="noticiaForm.invalid">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade modalImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Mostrar Imagenes</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="form-group">
+                <input type="file" #fileInput class="form-control" (change)="capturarFile($event)" multiple>
+              </div>
+            </div>
+            <div class="col-lg-4">
+               <button class="btn btn-block btn-success">Agregar Imagenes</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-6" *ngFor="let imagen of listNoticiaImagen">
+            <div class="card">
+                <img class="card-img-top img-responsive" src="{{url}}/{{imagen.nombre}}" alt="Card image cap">
+                <div class="card-body text-center">
+                    <button class="btn btn-danger" (click)="eliminarNoticiaImagen(imagen.id)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
 </div>
