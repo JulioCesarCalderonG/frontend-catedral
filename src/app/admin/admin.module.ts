@@ -14,7 +14,7 @@ import { DirectorioComponent } from './directorio/directorio.component';
 import { MinisteriosComponent } from './ministerios/ministerios.component';
 import { MaterialesPastoralesComponent } from './materiales-pastorales/materiales-pastorales.component';
 import { IniciacionCristianaComponent } from './iniciacion-cristiana/iniciacion-cristiana.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
@@ -36,6 +36,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AdminRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+    FormsModule,
     AngularEditorModule
   ]
 })

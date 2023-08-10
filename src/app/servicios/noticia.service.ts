@@ -16,7 +16,16 @@ export class NoticiaService {
   getNoticias(estado:string):Observable<any>{
     return this.http.get(this.url,{params:{estado}})
   }
+  getNoticiaId(id:number):Observable<any>{
+    return this.http.get(`${this.url}/${id}`);
+  }
   postNoticia(body:FormData):Observable<any>{
     return this.http.post(this.url,body);
+  }
+  putNoticia(body:FormData,id:number|string):Observable<any>{
+    return this.http.put(`${this.url}/${id}`,body);
+  }
+  publicarNoticia(id:number,estado:string):Observable<any>{
+    return this.http.delete(`${this.url}/${id}`,{params:{estado}});
   }
 }

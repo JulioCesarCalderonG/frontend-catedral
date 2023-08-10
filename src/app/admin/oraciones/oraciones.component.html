@@ -1,1 +1,45 @@
-<p>oraciones works!</p>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Nombre</th>
+        <th>Logo</th>
+        <th>Multiple</th>
+        <th>Imagen</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let oraciones of listOraciones">
+        <td>{{oraciones.id}}</td>
+        <td>{{oraciones.nombre}}</td>
+        <td>{{oraciones.logo}}</td>
+        <td>{{oraciones.multiple===1?'Si':'No'}}</td>
+        <td>
+          <button class="btn btn-primary"  data-toggle="modal"
+          data-target=".modalImagen">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning"  data-toggle="modal"
+          data-target=".modalEditar">
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td *ngIf="oraciones.estado===0">
+          <button class="btn btn-danger" >
+            <i class="fa fa-solid fa-lock"></i>
+          </button>
+        </td>
+        <td *ngIf="oraciones.estado===1">
+          <button class="btn btn-danger">
+            <i class="fa fa-solid fa-lock"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

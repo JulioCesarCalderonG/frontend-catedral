@@ -1,5 +1,12 @@
 <div class="row mb-5 justify-content-end">
-  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="0">Sin Publicar</option>
+          <option value="1">Publicado</option>
+      </select>
+    </div>
+  </div>
   <div class="col-md-4">
     <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
       data-target=".bs-example-modal-lg">
@@ -15,8 +22,6 @@
       <tr>
         <th>N°</th>
         <th>Descripcion</th>
-        <th>Año</th>
-        <th>Fecha</th>
         <th>Titulo</th>
         <th>Subtitulo</th>
         <th>Imagenes</th>
@@ -28,8 +33,6 @@
       <tr *ngFor="let noticia of listNoticias">
         <td>{{noticia.ids}}</td>
         <td>{{noticia.descripcion}}</td>
-        <td>{{noticia.ano}}</td>
-        <td>{{noticia.fecha}}</td>
         <td>{{noticia.titulo}}</td>
         <td>{{noticia.subtitulo}}</td>
         <td>
@@ -39,20 +42,26 @@
           </button>
         </td>
         <td>
-          <button class="btn btn-warning">
+          <button class="btn btn-warning" (click)="obtenerDatos(noticia.id)" data-toggle="modal"
+          data-target=".modalEditar">
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
-        <td>
-          <button class="btn btn-danger">
+        <td *ngIf="noticia.estado===0">
+          <button class="btn btn-danger" (click)="publicarNoticia(noticia.id,1)">
             <i class="fa fa-solid fa-upload"></i>
+          </button>
+        </td>
+        <td *ngIf="noticia.estado===1">
+          <button class="btn btn-danger" (click)="publicarNoticia(noticia.id,0)">
+            <i class="fa fa-solid fa-download"></i>
           </button>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-
+<!-- AGREGAR NOTICIA -->
 <div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
   style="display: none;">
   <div class="modal-dialog modal-lg">
@@ -92,6 +101,48 @@
   <!-- /.modal-dialog -->
 </div>
 
+<!-- EDITAR NOTICIA -->
+
+<div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Noticias</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form [formGroup]="editarNoticiaForm" (ngSubmit)="editarNoticia()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Titulo</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un titulo"
+              formControlName="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Subtitulo</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un subtitulo"
+              formControlName="subtitulo">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Descripcion</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"
+              formControlName="descripcion"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left"
+            [disabled]="editarNoticiaForm.invalid">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- MOSTRAR IMAGENES -->
 <div class="modal fade modalImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
   style="display: none;">
   <div class="modal-dialog modal-lg">
@@ -105,11 +156,11 @@
           <div class="row">
             <div class="col-lg-8">
               <div class="form-group">
-                <input type="file" #fileInput class="form-control" (change)="capturarFile($event)" multiple>
+                <input type="file" #fileInput class="form-control" (change)="capturarFile($event)" multiple (ngModel)="imagenUpload">
               </div>
             </div>
             <div class="col-lg-4">
-               <button class="btn btn-block btn-success">Agregar Imagenes</button>
+               <button class="btn btn-block btn-success" (click)="agregarImagenNoticia()">Agregar Imagenes</button>
             </div>
           </div>
         </div>

@@ -16,5 +16,10 @@ export class NoticiaImagenService {
   getNotiImagenIdNoticia(id:number|string):Observable<any>{
     return this.http.get(`${this.url}/${id}`);
   }
-
+  postNotiImagen(body:FormData):Observable<any>{
+    return this.http.post(this.url,body);
+  }
+  deleteNotiImagen(id:number):Observable<any>{
+    return this.http.delete(`${this.url}/${id}`);
+  }
 }
