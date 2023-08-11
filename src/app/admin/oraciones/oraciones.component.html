@@ -1,3 +1,21 @@
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
 <div class="table-responsive">
   <table class="table">
     <thead>
@@ -6,40 +24,172 @@
         <th>Nombre</th>
         <th>Logo</th>
         <th>Multiple</th>
-        <th>Imagen</th>
+        <th>Editar imagen</th>
         <th>Editar</th>
-        <th>Eliminar</th>
+        <th>Habilitar/Deshabilitar</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let oraciones of listOraciones">
         <td>{{oraciones.id}}</td>
         <td>{{oraciones.nombre}}</td>
-        <td>{{oraciones.logo}}</td>
-        <td>{{oraciones.multiple===1?'Si':'No'}}</td>
+        <td>
+          <div>
+            <img src="{{url}}/{{oraciones.logo}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td *ngIf="oraciones.multiple===1">
+          <div class="label label-table label-success">Si</div>
+        </td>
+        <td *ngIf="oraciones.multiple===2">
+          <div class="label label-table label-danger">No</div>
+        </td>
         <td>
           <button class="btn btn-primary"  data-toggle="modal"
-          data-target=".modalImagen">
+          data-target=".editarImagen" (click)="obtenerDatosLogo(oraciones.id)">
             <i class="fa fa-solid fa-images"></i>
           </button>
         </td>
         <td>
           <button class="btn btn-warning"  data-toggle="modal"
-          data-target=".modalEditar">
+          data-target=".editarOraciones" (click)="obtenerDatos(oraciones.id)">
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
         <td *ngIf="oraciones.estado===0">
-          <button class="btn btn-danger" >
-            <i class="fa fa-solid fa-lock"></i>
+          <button class="btn btn-danger" (click)="habiDesOraciones(oraciones.id,1)">
+            <i class="fa fa-solid fa-lock-open"></i>
           </button>
         </td>
         <td *ngIf="oraciones.estado===1">
-          <button class="btn btn-danger">
+          <button class="btn btn-danger" (click)="habiDesOraciones(oraciones.id,0)">
             <i class="fa fa-solid fa-lock"></i>
           </button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<!-- AGREGAR ORACIONES -->
+
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Oraciones</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarOraciones()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile($event)"
+            >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="oracionForm.nombre" name="nombre" >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Seleccionar multiple</label>
+            <select class="form-control custom-select"
+              [(ngModel)]="oracionForm.multiple" name="multiple"
+            >
+              <option value="">Seleccionar una opcion</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR ORACIONES -->
+
+<div class="modal fade editarOraciones show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Oraciones</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarOraciones()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="editarOracionForm.nombre" name="nombre" >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Seleccionar multiple</label>
+            <select class="form-control custom-select"
+              [(ngModel)]="editarOracionForm.multiple" name="multiple"
+            >
+              <option value="">Seleccionar una opcion</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR IMAGEN -->
+
+<div class="modal fade editarImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Imagen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarLogoOraciones()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile2($event)"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
