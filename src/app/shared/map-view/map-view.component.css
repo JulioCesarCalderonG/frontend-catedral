@@ -1,0 +1,16 @@
+.map-container{
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+
+}
+.listado{
+  position: absolute;
+  z-index: 999;
+  color: 'white';
+  width: 150px;
+  height: 150px;
+  background-color: black;
+}

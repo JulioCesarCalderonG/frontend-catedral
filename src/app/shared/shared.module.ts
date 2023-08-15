@@ -5,6 +5,9 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { RouterModule } from '@angular/router';
+import { MapViewComponent } from './map-view/map-view.component';
+import { LoadingComponent } from './loading/loading.component';
+import { BtnBtnLocacionComponent } from './btn-btn-locacion/btn-btn-locacion.component';
 
 
 
@@ -13,7 +16,10 @@ import { RouterModule } from '@angular/router';
     SidebarComponent,
     HeaderComponent,
     FooterComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    MapViewComponent,
+    LoadingComponent,
+    BtnBtnLocacionComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +29,10 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     HeaderComponent,
     SidebarComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    MapViewComponent,
+    LoadingComponent,
+    BtnBtnLocacionComponent
   ]
 })
 export class SharedModule { }

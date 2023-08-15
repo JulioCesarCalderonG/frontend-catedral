@@ -1,1 +1,7 @@
-<p>directorio works!</p>
+{{isUserLocationReady}}
+<app-loading *ngIf="!isUserLocationReady; else mapListo"></app-loading>
+
+<ng-template #mapListo>
+    <app-map-view></app-map-view>
+    <app-btn-btn-locacion></app-btn-btn-locacion>
+</ng-template>
