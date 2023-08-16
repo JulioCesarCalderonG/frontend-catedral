@@ -1,5 +1,10 @@
-button{
+.izquierda{
   position: fixed;
   top: 80px;
+  right: 20px;
+}
+.derecha{
+  position: fixed;
+  bottom: 80px;
   right: 20px;
 }

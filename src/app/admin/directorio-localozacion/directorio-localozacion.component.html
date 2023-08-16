@@ -1,0 +1,6 @@
+<app-loading *ngIf="!isUserLocationReady; else mapListo"></app-loading>
+
+<ng-template #mapListo>
+    <app-map-view (lngLatEmiter)="obtenerLatLng($event)" [ubicacion]="lngLat"></app-map-view>
+    <app-btn-btn-locacion (btnGuardar)="guardarLocalizacion()"></app-btn-btn-locacion>
+</ng-template>

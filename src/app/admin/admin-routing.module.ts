@@ -11,6 +11,7 @@ import { NoticiasComponent } from './noticias/noticias.component';
 import { DirectorioComponent } from './directorio/directorio.component';
 import { MinisteriosComponent } from './ministerios/ministerios.component';
 import { MaterialesPastoralesComponent } from './materiales-pastorales/materiales-pastorales.component';
+import { DirectorioLocalozacionComponent } from './directorio-localozacion/directorio-localozacion.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
       {path:'cancionero',component:CancioneroComponent},
       {path:'noticias',component:NoticiasComponent},
       {path:'directorio',component:DirectorioComponent},
+      {path:'directorio-localizacion/:id/:lat/:lng',component:DirectorioLocalozacionComponent},
       {path:'ministerio',component:MinisteriosComponent},
       {path:'materiales-pastorales',component:MaterialesPastoralesComponent}
     ]

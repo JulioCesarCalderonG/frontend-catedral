@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocationService } from 'src/app/servicios/location.service';
 
 @Component({
@@ -10,6 +11,7 @@ export class DirectorioComponent implements OnInit{
 
   constructor(
     private locationService:LocationService,
+    private router:Router
   ){
 
   }
@@ -18,5 +20,8 @@ export class DirectorioComponent implements OnInit{
   }
   get isUserLocationReady(){
     return this.locationService.isUserLocationReady;
+  }
+  localizacion(){
+    this.router.navigateByUrl(`admin/directorio-localizacion/${1}/${-8.383624204189573}/${-74.53290336202565}`)
   }
 }
