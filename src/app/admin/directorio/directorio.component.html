@@ -1,1 +1,139 @@
-<button class="btn btn-primary" (click)="localizacion()">mapa</button>
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="0">Sin publicar</option>
+          <option value="1">Publicado</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Tabla de Directorios -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Nombre</th>
+        <th>Direccion</th>
+        <th>Telefono</th>
+        <th>Logo</th>
+        <th>Imagen</th>
+        <th>Social</th>
+        <th>Editar Logo</th>
+        <th>Editar Imagen</th>
+        <th>Editar</th>
+        <th>Publicar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let directorio of listDirectorio">
+        <td>{{directorio.ids}}</td>
+        <td>{{directorio.nombre}}</td>
+        <td>{{directorio.direccion}}</td>
+        <td>{{directorio.telefono}}</td>
+        <td>
+          <div>
+            <img src="{{urlLogo}}/{{directorio.logo}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td>
+          <div>
+            <img src="{{urlImagen}}/{{directorio.imagen}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td>{{directorio.social}}</td>
+        <td>
+          <button class="btn btn-primary"  data-toggle="modal"
+          data-target=".modalImagen">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-primary"  data-toggle="modal"
+          data-target=".modalImagen">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning" data-toggle="modal"
+          data-target=".modalEditar">
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td *ngIf="directorio.estado===0">
+          <button class="btn btn-danger" >
+            <i class="fa fa-solid fa-upload"></i>
+          </button>
+        </td>
+        <td *ngIf="directorio.estado===1">
+          <button class="btn btn-danger" >
+            <i class="fa fa-solid fa-download"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AGREGAR DIRECTORIO -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Oraciones</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarDirectorio()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group text-center">
+                <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
+            </div>
+            <div class="form-group">
+              <input type="file" #fileInputLogo
+                class="form-control"
+                (change)="capturarFileLogo($event)"
+              >
+            </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group text-center">
+                <img src="{{imgDefaultImagen}}" class="img-thumbnail imgdefault" alt="...">
+            </div>
+            <div class="form-group">
+              <input type="file" #fileInputImagen
+                class="form-control"
+                (change)="capturarFileImagen($event)"
+
+              >
+            </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="directorioForm.nombre" name="nombre" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
