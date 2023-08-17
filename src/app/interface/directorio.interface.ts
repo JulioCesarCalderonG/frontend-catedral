@@ -5,6 +5,11 @@ export interface ResultDirectorios {
   msg:        string;
   directorio: Directorio[];
 }
+export interface ResultDirectorio {
+  ok:         boolean;
+  msg:        string;
+  directorio: Directorio;
+}
 
 export interface Directorio {
   ids:       number;
@@ -24,7 +29,7 @@ export interface DirectorioForm{
   nombre:string,
   telefono?:string,
   direccion:string,
-  logo:string,
-  archivo:string,
+  logo?:string,
+  archivo?:string,
   social?:string
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Lugar } from 'src/app/interface/lugar.interface';
+import { DirectorioService } from 'src/app/servicios/directorio.service';
 import { LocationService } from 'src/app/servicios/location.service';
-interface Lugar{
-  lng:number,
-  lat:number
-}
+import Swal from 'sweetalert2';
+
 interface Datos{
   id:string,
   lat:string,
@@ -25,20 +25,21 @@ export class DirectorioLocalozacionComponent implements OnInit{
     lng:0,
     lat:0
   }
+  id:string='';
+  titulo:string='';
   constructor(
     private rutaActiva: ActivatedRoute,
-    private locationService:LocationService
+    private locationService:LocationService,
+    private directorioService:DirectorioService
   ){
 
   }
   ngOnInit(): void {
-    const id = this.rutaActiva.snapshot.params['id'];
+    this.id = this.rutaActiva.snapshot.params['id'];
+    this.titulo=this.rutaActiva.snapshot.params['titulo'];
     const lat = Number(this.rutaActiva.snapshot.params['lat']);
     const lng = Number(this.rutaActiva.snapshot.params['lng']);
     this.lngLat={lng,lat};
-    //console.log(this.latLng);
-
-
   }
   get isUserLocationReady(){
     return this.locationService.isUserLocationReady;
@@ -46,13 +47,38 @@ export class DirectorioLocalozacionComponent implements OnInit{
 
   obtenerLatLng(event:Lugar){
     this.ubicacionFinal=event;
-    console.log(this.ubicacionFinal);
-
   }
 
   guardarLocalizacion(){
-    console.log('guardar');
-    console.log(this.ubicacionFinal);
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "Se actualizara la ubicacion del directorio!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, actualizar!',
+      cancelButtonText:'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.ubicacionFinal);
+        this.directorioService.putLocalizacion(this.ubicacionFinal,this.id).subscribe({
+          next:data=>{
+            console.log(data);
+            Swal.fire(
+              'Actualizado!',
+              data.msg,
+              'success'
+            )
+          },
+          error:error=>{
+            console.log(error);
+          }
+        })
+
+      }
+    })
+
 
   }
 

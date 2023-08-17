@@ -26,7 +26,7 @@ const routes: Routes = [
       {path:'cancionero',component:CancioneroComponent},
       {path:'noticias',component:NoticiasComponent},
       {path:'directorio',component:DirectorioComponent},
-      {path:'directorio-localizacion/:id/:lat/:lng',component:DirectorioLocalozacionComponent},
+      {path:'directorio-localizacion/:titulo/:id/:lat/:lng',component:DirectorioLocalozacionComponent},
       {path:'ministerio',component:MinisteriosComponent},
       {path:'materiales-pastorales',component:MaterialesPastoralesComponent}
     ]

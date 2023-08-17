@@ -22,6 +22,7 @@ export class MapViewComponent {
   divGeneral = document.querySelector('#listado');
   @Output('lngLatEmiter') lngLatEmiter = new EventEmitter<Lugar>();
   @Input() ubicacion?: Lugar;
+  @Input() titulo?: string;
   constructor(
     private locationService: LocationService,
     private mapService:MapService
@@ -30,12 +31,8 @@ export class MapViewComponent {
 
   }
   ngAfterViewInit(): void {
-
-
-    if (!this.ubicacion!) throw Error('No hay Ubicacion del Personal');
+    if (!this.ubicacion!) throw Error('No hay Ubicacion del directorio');
     const locacion:[number,number] = [this.ubicacion!.lng,this.ubicacion!.lat];
-    console.log(this.ubicacion);
-    //console.log(this.locationService.useLocation);
     this.map = new Map({
       container: this.mapDivElement.nativeElement, // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
@@ -47,7 +44,7 @@ export class MapViewComponent {
   }
   agregarMarcador(marcador:Lugar) {
     const popup = new Popup().setHTML(`
-      <h6>Iglesia</h6>
+      <h6>${this.titulo}</h6>
       <span>Mi Ubicacion</span>
     `);
     const marker = new Marker({

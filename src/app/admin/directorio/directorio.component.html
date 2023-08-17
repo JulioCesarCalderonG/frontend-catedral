@@ -28,6 +28,7 @@
         <th>Logo</th>
         <th>Imagen</th>
         <th>Social</th>
+        <th>Editar Ubicacion</th>
         <th>Editar Logo</th>
         <th>Editar Imagen</th>
         <th>Editar</th>
@@ -52,30 +53,37 @@
         </td>
         <td>{{directorio.social}}</td>
         <td>
-          <button class="btn btn-primary"  data-toggle="modal"
-          data-target=".modalImagen">
+          <button class="btn btn-success"  (click)="localizacion(directorio.nombre,directorio.lat,directorio.lng)"
+          >
+          <i class="fa fa-solid fa-location-dot"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-primary"  (click)="obtenerDatos(directorio.id)"
+          data-toggle="modal" data-target=".modalLogo">
             <i class="fa fa-solid fa-images"></i>
           </button>
         </td>
         <td>
-          <button class="btn btn-primary"  data-toggle="modal"
-          data-target=".modalImagen">
+          <button class="btn btn-primary"  (click)="obtenerDatos(directorio.id)"
+          data-toggle="modal" data-target=".modalImagen">
             <i class="fa fa-solid fa-images"></i>
           </button>
         </td>
         <td>
-          <button class="btn btn-warning" data-toggle="modal"
-          data-target=".modalEditar">
+          <button class="btn btn-warning"  (click)="obtenerDatos(directorio.id)"
+          data-toggle="modal" data-target=".modalEditar"
+          >
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
         <td *ngIf="directorio.estado===0">
-          <button class="btn btn-danger" >
+          <button class="btn btn-danger" (click)="eliminarDirectorio(1,directorio.id)">
             <i class="fa fa-solid fa-upload"></i>
           </button>
         </td>
-        <td *ngIf="directorio.estado===1">
-          <button class="btn btn-danger" >
+        <td *ngIf="directorio.estado===1" >
+          <button class="btn btn-danger" (click)="eliminarDirectorio(0,directorio.id)">
             <i class="fa fa-solid fa-download"></i>
           </button>
         </td>
@@ -90,46 +98,181 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myLargeModalLabel">Agregar Oraciones</h4>
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Directorio</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
       </div>
       <form #form="ngForm" (ngSubmit)="agregarDirectorio()">
         <div class="modal-body">
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <div class="form-group text-center">
                 <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
             </div>
             <div class="form-group">
+              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
               <input type="file" #fileInputLogo
                 class="form-control"
                 (change)="capturarFileLogo($event)"
               >
             </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <div class="form-group text-center">
-                <img src="{{imgDefaultImagen}}" class="img-thumbnail imgdefault" alt="...">
+                <img src="{{imgDefaultImagen}}" class="img-thumbnail imgImagen" alt="...">
             </div>
             <div class="form-group">
+              <label class="control-label">Seleccionar Imagen <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
               <input type="file" #fileInputImagen
                 class="form-control"
                 (change)="capturarFileImagen($event)"
-
               >
             </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label">Nombre</label>
+            <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
             <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
-             [(ngModel)]="directorioForm.nombre" name="nombre" >
+             [(ngModel)]="directorioForm.nombre" name="nombre">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Telefono</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un telefono"
+             [(ngModel)]="directorioForm.telefono" name="telefono" >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Direccion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un direccion"
+             [(ngModel)]="directorioForm.direccion" name="direccion" >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Facebook </label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="directorioForm.social" name="social" >
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
             (click)="cancelar()">Cancelar</button>
           <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR DIRECTORIO -->
+<div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+style="display: none;">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myLargeModalLabel">Editar Directorio</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+    </div>
+    <form #form="ngForm" (ngSubmit)="editarDirectorio()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+          <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+           [(ngModel)]="editarDirectorioForm.nombre" name="nombre">
+        </div>
+        <div class="form-group">
+          <label class="control-label">Telefono</label>
+          <input type="text" id="firstName" class="form-control" placeholder="agregar un telefono"
+           [(ngModel)]="editarDirectorioForm.telefono" name="telefono" >
+        </div>
+        <div class="form-group">
+          <label class="control-label">Direccion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+          <input type="text" id="firstName" class="form-control" placeholder="agregar un direccion"
+           [(ngModel)]="editarDirectorioForm.direccion" name="direccion" >
+        </div>
+        <div class="form-group">
+          <label class="control-label">Facebook </label>
+          <input type="text" id="firstName" class="form-control" placeholder="agregar facebook"
+           [(ngModel)]="editarDirectorioForm.social" name="social" >
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+          (click)="cancelar()">Cancelar</button>
+        <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+      </div>
+    </form>
+  </div>
+  <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR LOGO -->
+<div class="modal fade modalLogo show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Logo</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="actualizarLogo()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group text-center">
+                <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputLogo
+                class="form-control"
+                (change)="capturarFileLogo($event)"
+              >
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Actualizar Logo</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- EDITAR IMAGEN -->
+<div class="modal fade modalImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Imagen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="actualizarImagen()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group text-center">
+                <img src="{{imgDefaultImagen}}" class="img-thumbnail imgImagen" alt="...">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputImagen
+                class="form-control"
+                (change)="capturarFileImagen($event)"
+              >
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Actualizar Imagen</button>
         </div>
       </form>
     </div>

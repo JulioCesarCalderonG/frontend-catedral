@@ -1,1 +1,66 @@
-<p>cancionero works!</p>
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- MOSTRAR CANCIONERO -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Nombre</th>
+        <th>Logo</th>
+        <th>Editar imagen</th>
+        <th>Editar</th>
+        <th>Habilitar/Deshabilitar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cancionero of listCancionero">
+        <td>{{cancionero.ids}}</td>
+        <td>{{cancionero.nombre}}</td>
+        <td>
+          <div>
+            <img src="{{url}}/{{cancionero.logo}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-primary"  data-toggle="modal"
+          data-target=".editarImagen">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning"  data-toggle="modal"
+          data-target=".editarcancionero" >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td *ngIf="cancionero.estado===0">
+          <button class="btn btn-danger" (click)="habiDesCancionero(cancionero.id,1)">
+            <i class="fa fa-solid fa-lock-open"></i>
+          </button>
+        </td>
+        <td *ngIf="cancionero.estado===1">
+          <button class="btn btn-danger" (click)="habiDesCancionero(cancionero.id,0)">
+            <i class="fa fa-solid fa-lock"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
