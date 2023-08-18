@@ -1,1 +1,241 @@
-<p>ministerios works!</p>
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Tabla de Ministerio -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Nombre</th>
+        <th>Titulo</th>
+        <th>Ver Logo</th>
+        <th>Ver PDF</th>
+        <th>Editar Logo</th>
+        <th>Editar PDF</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ministerio of listMinisterio">
+        <td>{{ministerio.id}}</td>
+        <td>{{ministerio.nombre}}</td>
+        <td>{{ministerio.titulo}}</td>
+        <td>
+          <div>
+            <img src="{{urlLogo}}/{{ministerio.logo}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td>
+          <a class="btn btn-secondary"
+            href="{{urlPDF}}/{{ministerio.pdf}}"
+            target="_blank"
+            >
+            <i class="fa fa-solid fa-eye"></i>
+          </a>
+        </td>
+        <td>
+          <button class="btn btn-primary"
+          data-toggle="modal" data-target=".modalLogo"
+          (click)="obtenerDatos(ministerio.id)"
+          >
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-primary"
+          data-toggle="modal" data-target=".modalPDF"
+          (click)="obtenerDatos(ministerio.id)"
+          >
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning"
+          data-toggle="modal" data-target=".modalEditar"
+          (click)="obtenerDatos(ministerio.id)"
+          >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminarMinisterio(ministerio.id)">
+            <i class="fa fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- AGREGAR MINISTERIOS -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Ministerio</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarDirectorio()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group text-center">
+                <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputLogo
+                class="form-control"
+                (change)="capturarFileLogo($event)"
+
+              >
+            </div>
+            </div>
+            <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputPDF
+                class="form-control"
+                (change)="capturarFileImagen($event)"
+              >
+            </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="ministerioForm.nombre" name="nombre">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Titulo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un telefono"
+             [(ngModel)]="ministerioForm.titulo" name="titulo" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR MINISTERIOS -->
+<div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Ministerio</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarMinisterio()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="editarMinisterioForm.nombre" name="nombre">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Titulo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un telefono"
+             [(ngModel)]="editarMinisterioForm.titulo" name="titulo" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR LOGO -->
+<div class="modal fade modalLogo show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Logo</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarLogoMinisterio()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group text-center">
+                <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputLogo
+                class="form-control"
+                (change)="capturarFileLogo2($event)"
+              >
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR PDF -->
+<div class="modal fade modalPDF show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar PDF</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarPDFMinisterio()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputPDF
+                class="form-control"
+                (change)="capturarFileImagen2($event)"
+              >
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

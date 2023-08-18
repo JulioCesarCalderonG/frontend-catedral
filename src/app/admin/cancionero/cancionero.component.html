@@ -40,13 +40,13 @@
         </td>
         <td>
           <button class="btn btn-primary"  data-toggle="modal"
-          data-target=".editarImagen">
+          data-target=".editarImagen" (click)="obtenerDatos(cancionero.id)">
             <i class="fa fa-solid fa-images"></i>
           </button>
         </td>
         <td>
           <button class="btn btn-warning"  data-toggle="modal"
-          data-target=".editarcancionero" >
+          data-target=".editarcancionero" (click)="obtenerDatos(cancionero.id)">
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
@@ -63,4 +63,104 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<!-- AGREGAR CANCIONERO -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Cancionero</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarCancionero()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile($event)"
+            >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="cancioneroForm.nombre" name="nombre" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR CANCIONERO -->
+<div class="modal fade editarcancionero show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Cancionero</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarCancionero()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="editarCancioneroForm.nombre" name="nombre" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR LOGO CANCIONERO -->
+<div class="modal fade editarImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Imagen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarLogoOraciones()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile2($event)"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>

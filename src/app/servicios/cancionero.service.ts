@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { CancioneroForm } from '../interface/cancioner.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class CancioneroService {
   postCancionero(body: FormData): Observable<any> {
     return this.http.post(this.url, body);
   }
-  putCancionero(body: FormData, id: string): Observable<any> {
+  putCancionero(body: CancioneroForm, id: string): Observable<any> {
     return this.http.put(`${this.url}/${id}`, body);
   }
   putImagenCancionero(body:FormData,id:string):Observable<any>{

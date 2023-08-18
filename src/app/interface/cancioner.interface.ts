@@ -5,6 +5,11 @@ export interface ResultCancioneros {
   msg:        string;
   cancionero: Cancionero[];
 }
+export interface ResultCancionero {
+  ok:         boolean;
+  msg:        string;
+  cancionero: Cancionero;
+}
 
 export interface Cancionero {
   ids:    number;
@@ -12,4 +17,9 @@ export interface Cancionero {
   nombre: string;
   logo:   string;
   estado: number;
+}
+
+export interface CancioneroForm{
+  nombre?:string,
+  logo?:string
 }
