@@ -17,6 +17,7 @@ export class SidebarService {
       icono: 'fa fa-solid fa-book-bible',
       submenu: [
         { titulo: 'Mostrar Oraciones', url: 'oraciones' },
+        { titulo: 'Tipo Oraciones', url: 'tipo-oracion' },
       ]
     },
     {

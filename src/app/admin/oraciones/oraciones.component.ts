@@ -103,7 +103,7 @@ export class OracionesComponent implements OnInit{
       next:(data)=>{
         this.toastr.success(data.msg,'EDITADO');
         this.mostrarOraciones();
-        this.cancelar();
+        this.reset();
       },
       error:(error)=>{
         console.log(error);

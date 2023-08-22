@@ -1,1 +1,166 @@
-<p>iniciacion-cristiana works!</p>
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Nombre</th>
+        <th>Logo</th>
+        <th>Editar imagen</th>
+        <th>Editar</th>
+        <th>Habilitar/Deshabilitar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let iniciacion of listIniciacion">
+        <td>{{iniciacion.id}}</td>
+        <td>{{iniciacion.nombre}}</td>
+        <td>
+          <div>
+            <img src="{{url}}/{{iniciacion.logo}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-primary"  data-toggle="modal"
+          data-target=".editarImagen" (click)="obtenerDatos(iniciacion.id)">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning"  data-toggle="modal"
+          data-target=".editarOraciones" (click)="obtenerDatos(iniciacion.id)" >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td *ngIf="iniciacion.estado===0">
+          <button class="btn btn-danger" (click)="habiDesIniciacion(iniciacion.id,1)">
+            <i class="fa fa-solid fa-lock-open"></i>
+          </button>
+        </td>
+        <td *ngIf="iniciacion.estado===1">
+          <button class="btn btn-danger" (click)="habiDesIniciacion(iniciacion.id,0)">
+            <i class="fa fa-solid fa-lock"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- AGREGAR INICIACION -->
+
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Iniciacion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarIniciacion()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile($event)"
+            >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="iniciacionForm.nombre" name="nombre" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR INICIACION -->
+
+<div class="modal fade editarOraciones show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Iniciacion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarIniciacion()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="editarIniciacionForm.nombre" name="nombre" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR IMAGEN -->
+
+<div class="modal fade editarImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Imagen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarLogoIniciacion()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile2($event)"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

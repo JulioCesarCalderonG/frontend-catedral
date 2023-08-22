@@ -12,6 +12,7 @@ import { DirectorioComponent } from './directorio/directorio.component';
 import { MinisteriosComponent } from './ministerios/ministerios.component';
 import { MaterialesPastoralesComponent } from './materiales-pastorales/materiales-pastorales.component';
 import { DirectorioLocalozacionComponent } from './directorio-localozacion/directorio-localozacion.component';
+import { TipoOracionesComponent } from './tipo-oraciones/tipo-oraciones.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       {path:'',component:DashboardComponent},
       {path:'grafica',component:GraficaComponent},
       {path:'oraciones',component:OracionesComponent},
+      {path:'tipo-oracion',component:TipoOracionesComponent},
       {path:'iniciacion-cristiana',component:IniciacionCristianaComponent},
       {path:'liturgia',component:LiturgiaComponent},
       {path:'cancionero',component:CancioneroComponent},

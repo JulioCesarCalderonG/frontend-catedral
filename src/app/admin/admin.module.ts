@@ -17,6 +17,9 @@ import { IniciacionCristianaComponent } from './iniciacion-cristiana/iniciacion-
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DirectorioLocalozacionComponent } from './directorio-localozacion/directorio-localozacion.component';
+import { TipoOracionesComponent } from './tipo-oraciones/tipo-oraciones.component';
+import { TipoCancioneroComponent } from './tipo-cancionero/tipo-cancionero.component';
+import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { DirectorioLocalozacionComponent } from './directorio-localozacion/direc
     MinisteriosComponent,
     MaterialesPastoralesComponent,
     IniciacionCristianaComponent,
-    DirectorioLocalozacionComponent
+    DirectorioLocalozacionComponent,
+    TipoOracionesComponent,
+    TipoCancioneroComponent,
+    TipoLiturgiaComponent
   ],
   imports: [
     CommonModule,
