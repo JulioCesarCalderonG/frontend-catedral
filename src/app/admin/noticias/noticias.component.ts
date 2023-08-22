@@ -162,7 +162,8 @@ export class NoticiasComponent implements OnInit{
           next:(data)=>{
             this.mostrarImagen(this.ids);
             this.toastr.success(data.msg,'REGISTRADO');
-            this.cancelar();
+            this.reset();
+            //this.cancelar();
           },
           error:(error)=>{
             console.log(error);
