@@ -1,0 +1,80 @@
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Tabla de Tiempo Liturgia -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Descripcion</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tiempoLiturgia of listTiempoLiturgia">
+        <td>{{tiempoLiturgia.id}}</td>
+        <td>{{tiempoLiturgia.descripcion}}</td>
+        <td>
+          <button class="btn btn-warning"
+          data-toggle="modal" data-target=".modalEditar"
+          (click)="obtenerDatos(tiempoLiturgia.id)"
+          >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminarTiempoLiturgia(tiempoLiturgia.id)">
+            <i class="fa fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AGREGAR TIEMPO LITURGIA -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Tipo Liturgia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarTiempoLiturgia()">
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label class="control-label">Agregar Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <textarea class="form-control" [(ngModel)]="tiempoLiturgiaForm.descripcion" name="descripcion" id="" cols="30" rows="3"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

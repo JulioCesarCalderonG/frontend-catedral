@@ -13,6 +13,8 @@ import { MinisteriosComponent } from './ministerios/ministerios.component';
 import { MaterialesPastoralesComponent } from './materiales-pastorales/materiales-pastorales.component';
 import { DirectorioLocalozacionComponent } from './directorio-localozacion/directorio-localozacion.component';
 import { TipoOracionesComponent } from './tipo-oraciones/tipo-oraciones.component';
+import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
+import { TiempoLiturgiaComponent } from './tiempo-liturgia/tiempo-liturgia.component';
 
 const routes: Routes = [
   {
@@ -25,6 +27,8 @@ const routes: Routes = [
       {path:'tipo-oracion',component:TipoOracionesComponent},
       {path:'iniciacion-cristiana',component:IniciacionCristianaComponent},
       {path:'liturgia',component:LiturgiaComponent},
+      {path:'tiempo-liturgia',component:TiempoLiturgiaComponent},
+      {path:'tipo-liturgia',component:TipoLiturgiaComponent},
       {path:'cancionero',component:CancioneroComponent},
       {path:'noticias',component:NoticiasComponent},
       {path:'directorio',component:DirectorioComponent},

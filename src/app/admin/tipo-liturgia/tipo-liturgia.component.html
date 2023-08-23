@@ -1,1 +1,151 @@
-<p>tipo-liturgia works!</p>
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Tabla de Ministerio -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Descripcion</th>
+        <th>fecha</th>
+        <th>Nombre fecha</th>
+        <th>Liturgia</th>
+        <th>Tiempo Liturgia</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tipoLiturgia of listTipoLiturgia">
+        <td>{{tipoLiturgia.id}}</td>
+        <td>{{tipoLiturgia.descripcion}}</td>
+        <td>{{tipoLiturgia.fecha}}</td>
+        <td>{{tipoLiturgia.nom_fecha}}</td>
+        <td>{{tipoLiturgia.Liturgium.nombre}}</td>
+        <td>{{tipoLiturgia.TiempoLiturgium.descripcion}}</td>
+        <td>
+          <button class="btn btn-warning"
+          data-toggle="modal" data-target=".modalEditar"
+          (click)="obtenerDatos(tipoLiturgia.id)"
+          >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminarTipoLiturgia(tipoLiturgia.id)">
+            <i class="fa fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AGREGAR TIPO LITURGIA -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Tipo Liturgia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarTipoLiturgia()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Nombre Fecha <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="tipoLiturgiaForm.nom_fecha" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Fecha <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="date" class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="tipoLiturgiaForm.fecha" name="fecha">
+          </div>
+          <div class="form-group">
+            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="tipoLiturgiaForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Liturgia <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="tipoLiturgiaForm.id_liturgia" name="id_liturgia">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let liturgia of listLiturgia" value="{{liturgia.id}}" >{{liturgia.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Tiempo Liturgia <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="tipoLiturgiaForm.id_tiempo" name="id_tiempo">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let tiempoLiturgia of listTiempoLiturgia" value="{{tiempoLiturgia.id}}" >{{tiempoLiturgia.descripcion}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!-- EDITAR TIPO LITURGIA -->
+<div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Tipo Liturgia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarTipoLiturgia()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Nombre Fecha <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+             [(ngModel)]="editarTipoLiturgiaForm.nom_fecha" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Fecha <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="date" class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="editarTipoLiturgiaForm.fecha" name="fecha">
+          </div>
+          <div class="form-group">
+            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editarTipoLiturgiaForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Liturgia <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="editarTipoLiturgiaForm.id_liturgia" name="id_liturgia">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let liturgia of listLiturgia" value="{{liturgia.id}}" >{{liturgia.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Tiempo Liturgia <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="editarTipoLiturgiaForm.id_tiempo" name="id_tiempo">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let tiempoLiturgia of listTiempoLiturgia" value="{{tiempoLiturgia.id}}" >{{tiempoLiturgia.descripcion}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

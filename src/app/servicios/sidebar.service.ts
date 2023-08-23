@@ -31,7 +31,9 @@ export class SidebarService {
       titulo: 'Liturgias',
       icono: 'fa fa-solid fa-signature',
       submenu: [
-        { titulo: 'Mostrar Liturgias', url: 'liturgia' },
+        { titulo: 'Liturgias', url: 'liturgia' },
+        { titulo: 'Tiempo Liturgias', url: 'tiempo-liturgia' },
+        { titulo: 'Tipo Liturgias', url: 'tipo-liturgia' },
       ]
     },
     {

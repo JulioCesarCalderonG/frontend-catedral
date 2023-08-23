@@ -20,6 +20,7 @@ import { DirectorioLocalozacionComponent } from './directorio-localozacion/direc
 import { TipoOracionesComponent } from './tipo-oraciones/tipo-oraciones.component';
 import { TipoCancioneroComponent } from './tipo-cancionero/tipo-cancionero.component';
 import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
+import { TiempoLiturgiaComponent } from './tiempo-liturgia/tiempo-liturgia.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
     DirectorioLocalozacionComponent,
     TipoOracionesComponent,
     TipoCancioneroComponent,
-    TipoLiturgiaComponent
+    TipoLiturgiaComponent,
+    TiempoLiturgiaComponent
   ],
   imports: [
     CommonModule,
