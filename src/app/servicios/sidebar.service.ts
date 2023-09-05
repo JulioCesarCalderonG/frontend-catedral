@@ -25,6 +25,7 @@ export class SidebarService {
       icono: 'fa fa-solid fa-user-injured',
       submenu: [
         { titulo: 'Mostrar Iniciacion', url: 'iniciacion-cristiana' },
+        { titulo: 'Tipo Iniciacion', url: 'tipo-iniciacion' },
       ]
     },
     {

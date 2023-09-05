@@ -15,6 +15,7 @@ import { DirectorioLocalozacionComponent } from './directorio-localozacion/direc
 import { TipoOracionesComponent } from './tipo-oraciones/tipo-oraciones.component';
 import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
 import { TiempoLiturgiaComponent } from './tiempo-liturgia/tiempo-liturgia.component';
+import { TipoIniciacionComponent } from './tipo-iniciacion/tipo-iniciacion.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
       {path:'oraciones',component:OracionesComponent},
       {path:'tipo-oracion',component:TipoOracionesComponent},
       {path:'iniciacion-cristiana',component:IniciacionCristianaComponent},
+      {path:'tipo-iniciacion',component:TipoIniciacionComponent},
       {path:'liturgia',component:LiturgiaComponent},
       {path:'tiempo-liturgia',component:TiempoLiturgiaComponent},
       {path:'tipo-liturgia',component:TipoLiturgiaComponent},

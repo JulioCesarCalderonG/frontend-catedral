@@ -1,0 +1,115 @@
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Nombre</th>
+        <th>Iniciacion</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let iniciacion of listTipoIniciacion">
+        <td>{{iniciacion.id}}</td>
+        <td>{{iniciacion.descripcion}}</td>
+        <td>{{iniciacion.Iniciacion.nombre}}</td>
+        <td>
+          <button class="btn btn-warning"  data-toggle="modal"
+          data-target=".editarIniciacion" (click)="obtenerDatos(iniciacion.id)" >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminar(iniciacion.id)">
+            <i class="fa fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AGREGAR TIPO INICIACION -->
+
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Tipo Iniciacion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form  [formGroup]="iniciacionForm" (ngSubmit)="agregarTipoIniciacion()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Iniciacion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" name="id_oracion" formControlName="id_iniciacion">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let ini of listIniciacion" value="{{ini.id}}" >{{ini.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar una descripcion"
+              name="nombre" formControlName="descripcion">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left" [disabled]="iniciacionForm.invalid">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!-- EDITAR TIPO INICIACION -->
+
+<div class="modal fade editarIniciacion show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Tipo Iniciacion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form  [formGroup]="editarIniciacionForm" (ngSubmit)="editarTipoIniciacion()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Iniciacion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" name="id_oracion" formControlName="id_iniciacion">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let ini of listIniciacion" value="{{ini.id}}" >{{ini.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar una descripcion"
+              name="nombre" formControlName="descripcion">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left" [disabled]="editarIniciacionForm.invalid">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
