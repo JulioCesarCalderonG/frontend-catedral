@@ -1,1 +1,61 @@
-<p>tipo-cancionero works!</p>
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- MOSTRAR CANCIONERO -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Titulo</th>
+        <th>Descripcion</th>
+        <th>Subdescripcion</th>
+        <th>Numero</th>
+        <th>Cancionero</th>
+        <th>Logo</th>
+        <th>Editar imagen</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tipoCancionero of listTipoCancionero">
+        <td>{{tipoCancionero.id}}</td>
+        <td>{{tipoCancionero.titulo}}</td>
+        <td>{{tipoCancionero.descripcion}}</td>
+        <td>{{tipoCancionero.subdescripcion}}</td>
+        <td>{{tipoCancionero.numero}}</td>
+        <td>{{tipoCancionero.Cancionero.nombre}}</td>
+        <td>
+          <div>
+            <img src="{{url}}/{{tipoCancionero.logo}}" class="rounded" alt="...">
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-primary"  data-toggle="modal"
+          data-target=".editarImagen" (click)="obtenerDatos(tipoCancionero.id)">
+            <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning"  data-toggle="modal"
+          data-target=".editarcancionero" (click)="obtenerDatos(tipoCancionero.id)">
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminar(tipoCancionero.id)">
+            <i class="fa fa-solid fa-lock-open"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

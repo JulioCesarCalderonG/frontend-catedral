@@ -41,7 +41,8 @@ export class SidebarService {
       titulo: 'Cancioneros',
       icono: 'fa fa-solid fa-guitar',
       submenu: [
-        { titulo: 'Mostrar Cancionero', url: 'cancionero' },
+        { titulo: 'Cancionero', url: 'cancionero' },
+        { titulo: 'Tipo Cancionero', url: 'tipo-cancionero' },
       ]
     },
     {
