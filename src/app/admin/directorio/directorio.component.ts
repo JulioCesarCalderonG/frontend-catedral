@@ -185,8 +185,8 @@ export class DirectorioComponent implements OnInit{
       }
     })
   }
-  localizacion(titulo:string,lat:number,lng:number){
-    this.router.navigateByUrl(`admin/directorio-localizacion/${titulo}/${1}/${lat}/${lng}`)
+  localizacion(titulo:string,lat:number,lng:number, id:number){
+    this.router.navigateByUrl(`admin/directorio-localizacion/${titulo}/${id}/${lat}/${lng}`)
   }
   showEvent(event:any){
     console.log(event.target.value);

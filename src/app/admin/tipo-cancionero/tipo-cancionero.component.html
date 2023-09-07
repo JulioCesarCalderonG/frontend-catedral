@@ -39,23 +39,179 @@
           </div>
         </td>
         <td>
-          <button class="btn btn-primary"  data-toggle="modal"
-          data-target=".editarImagen" (click)="obtenerDatos(tipoCancionero.id)">
+          <button class="btn btn-primary" data-toggle="modal" data-target=".editarImagen"
+            (click)="obtenerDatos(tipoCancionero.id)">
             <i class="fa fa-solid fa-images"></i>
           </button>
         </td>
         <td>
-          <button class="btn btn-warning"  data-toggle="modal"
-          data-target=".editarcancionero" (click)="obtenerDatos(tipoCancionero.id)">
+          <button class="btn btn-warning" data-toggle="modal" data-target=".editarcancionero"
+            (click)="obtenerDatos(tipoCancionero.id)">
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
         <td>
           <button class="btn btn-danger" (click)="eliminar(tipoCancionero.id)">
-            <i class="fa fa-solid fa-lock-open"></i>
+            <i class="fa fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+
+<!-- AGREGAR TIPO LITURGIA -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Tipo Liturgia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarTipoCancionero()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+            <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput class="form-control" (change)="capturarFile($event)">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Cancionero <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="tipoCancioneroForm.id_cancionero"
+              name="id_cancionero">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let cancionero of listCancionero" value="{{cancionero.id}}">{{cancionero.nombre}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Titulo <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+              [(ngModel)]="tipoCancioneroForm.titulo" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Subdescripcion <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+              [(ngModel)]="tipoCancioneroForm.subdescripcion" name="subdescripcion">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Descripcion <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="tipoCancioneroForm.descripcion"
+              name="descripcion" [config]="editorConfig"></angular-editor>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Numero de Cancion <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="number " id="firstName" class="form-control" placeholder="agregar un numero"
+              [(ngModel)]="tipoCancioneroForm.numero" name="numero">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR TIPO LITURGIA -->
+<div class="modal fade editarcancionero show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Tipo Liturgia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarTipoCancionero()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Cancionero <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="editarTipoCancioneroForm.id_cancionero"
+              name="id_cancionero">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let cancionero of listCancionero" value="{{cancionero.id}}">{{cancionero.nombre}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Titulo <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+              [(ngModel)]="editarTipoCancioneroForm.titulo" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Subdescripcion <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
+              [(ngModel)]="editarTipoCancioneroForm.subdescripcion" name="subdescripcion">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Descripcion <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editarTipoCancioneroForm.descripcion"
+              name="descripcion" [config]="editorConfig"></angular-editor>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Numero de Cancion <i style="color: red; font-size: 12px;"
+                class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="number " id="firstName" class="form-control" placeholder="agregar un numero"
+              [(ngModel)]="editarTipoCancioneroForm.numero" name="numero">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR LOGO CANCIONERO -->
+<div class="modal fade editarImagen show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Imagen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarLogoCancionero()">
+        <div class="modal-body">
+          <div class="form-group text-center">
+              <img src="{{imgDefault}}" class="img-thumbnail imgdefault" alt="...">
+          </div>
+          <div class="form-group">
+            <input type="file" #fileInput
+              class="form-control"
+              (change)="capturarFile2($event)"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>

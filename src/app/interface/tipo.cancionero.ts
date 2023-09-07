@@ -30,3 +30,14 @@ export interface Cancionero {
   estado: number;
 }
 
+export interface TipoCancioneroForm{
+  titulo:string,
+  descripcion:string,
+  subdescripcion:string,
+  numero:string,
+  id_cancionero:string,
+  logo?:string
+}
+export interface LogoTipoCancioneroForm{
+  logo:string
+}

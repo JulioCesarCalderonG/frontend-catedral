@@ -103,7 +103,7 @@ export class CancioneroComponent implements OnInit{
 
         this.toastr.success(data.msg,'EDITADO');
         this.mostrarCancionero();
-        this.cancelar();
+        this.reset();
       },
       error:(error)=>{
         console.log(error);

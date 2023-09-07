@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import { Observable } from 'rxjs';
+import { TipoCancioneroForm } from '../interface/tipo.cancionero';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,9 @@ export class TipoCancioneroService {
   }
   putTipoCancionero(body:FormData,id:string):Observable<any>{
     return this.http.put(`${this.url}/${id}`,body)
+  }
+  putLogoTipoCancionero(body:FormData,id:string):Observable<any>{
+    return this.http.put(`${this.url}/imagen/${id}`,body)
   }
   deleteTipoCancionero(id:number):Observable<any>{
     return this.http.delete(`${this.url}/${id}`)
