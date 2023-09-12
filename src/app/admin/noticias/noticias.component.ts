@@ -9,6 +9,7 @@ import { NotiImagen, ResultNoticiaImagen } from 'src/app/interface/noticia.image
 import { environment } from 'src/environments/environment.prod';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 
 @Component({
   selector: 'app-noticias',
@@ -32,7 +33,8 @@ export class NoticiasComponent implements OnInit{
     private fb:FormBuilder,
     private toastr:ToastrService,
     private notiImagenService:NoticiaImagenService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
     this.noticiaForm=this.fb.group({
       titulo:['', Validators.required],
@@ -118,6 +120,7 @@ export class NoticiasComponent implements OnInit{
               data.msg,
               'success'
             );
+            this.wsService.emit('nueva-noticia');
             this.mostrarNoticias();
           },
           error:(error)=>{

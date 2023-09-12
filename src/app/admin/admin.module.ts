@@ -22,6 +22,7 @@ import { TipoCancioneroComponent } from './tipo-cancionero/tipo-cancionero.compo
 import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
 import { TiempoLiturgiaComponent } from './tiempo-liturgia/tiempo-liturgia.component';
 import { TipoIniciacionComponent } from './tipo-iniciacion/tipo-iniciacion.component';
+import { AtencionComponent } from './atencion/atencion.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TipoIniciacionComponent } from './tipo-iniciacion/tipo-iniciacion.compo
     TipoCancioneroComponent,
     TipoLiturgiaComponent,
     TiempoLiturgiaComponent,
-    TipoIniciacionComponent
+    TipoIniciacionComponent,
+    AtencionComponent
   ],
   imports: [
     CommonModule,

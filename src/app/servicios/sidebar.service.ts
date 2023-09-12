@@ -50,6 +50,7 @@ export class SidebarService {
       icono: 'fa fa-solid fa-location-arrow',
       submenu: [
         { titulo: 'Mostrar Directorios', url: 'directorio' },
+        { titulo: 'Horarios', url: 'atencion' },
       ]
     },
     {
@@ -57,6 +58,7 @@ export class SidebarService {
       icono: 'fa fa-solid fa-house-chimney',
       submenu: [
         { titulo: 'Mostrar Ministerios', url: 'ministerio' },
+
       ]
     },
     {

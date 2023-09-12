@@ -1,0 +1,143 @@
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Directorio</th>
+              <th>Horario</th>
+              <th>Tipo Atencion</th>
+              <th>Descripcion</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let atencion of listAtencion">
+              <td>{{atencion.id}}</td>
+              <td>{{atencion.Directorio.nombre}}</td>
+              <td>{{atencion.Horario.descripcion}}</td>
+              <td>{{atencion.TipoAtencion.descripcion}} </td>
+              <td>{{atencion.descripcion}}</td>
+              <td>
+                <button class="btn btn-warning"  data-toggle="modal"
+                data-target=".editarModal" (click)="obtenerDatos(atencion.id)">
+                  <i class="fa fa-solid fa-pencil"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-danger" (click)="eliminarAtencion(atencion.id)">
+                  <i class="fa fa-solid fa-trash"></i>
+                </button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+<!-- AGREGAR TIPO LITURGIA -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Atencion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form [formGroup]="atencionForm" (ngSubmit)="agregarAtencion()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar una descripcion" formControlName="descripcion">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Directorio <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" formControlName="id_directorio">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let directorio of listDirectorios" value="{{directorio.id}}" >{{directorio.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Horario <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" formControlName="id_horario">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let horario of listHorario" value="{{horario.id}}" >{{horario.descripcion}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Tipo Atencion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" formControlName="id_tipo_atencion">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let tipoAtencion of listTipoAtencion" value="{{tipoAtencion.id}}" >{{tipoAtencion.descripcion}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left" [disabled]="atencionForm.invalid">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- AGREGAR TIPO LITURGIA -->
+<div class="modal fade editarModal show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Atencion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form [formGroup]="editarAtencionForm" (ngSubmit)="editarAtencion()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar una descripcion" formControlName="descripcion">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Directorio <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" formControlName="id_directorio">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let directorio of listDirectorios" value="{{directorio.id}}" >{{directorio.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Horario <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" formControlName="id_horario">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let horario of listHorario" value="{{horario.id}}" >{{horario.descripcion}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Tipo Atencion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" formControlName="id_tipo_atencion">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let tipoAtencion of listTipoAtencion" value="{{tipoAtencion.id}}" >{{tipoAtencion.descripcion}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left" [disabled]="editarAtencionForm.invalid">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
