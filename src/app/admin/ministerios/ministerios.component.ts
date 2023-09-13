@@ -10,6 +10,7 @@ import {
   ResultMinisterios,
 } from 'src/app/interface/ministerios.interface';
 import { MinisteriosService } from 'src/app/servicios/ministerios.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -52,7 +53,8 @@ export class MinisteriosComponent implements OnInit {
     private ministerioService: MinisteriosService,
     private router: Router,
     private toastr: ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +91,7 @@ export class MinisteriosComponent implements OnInit {
         this.toastr.success(data.msg,'REGISTRADO');
         this.mostrarMinisterio();
         this.cancelar();
+        this.wsService.emit('nueva-ministerio');
       },
       error:error=>{
         console.log(error);

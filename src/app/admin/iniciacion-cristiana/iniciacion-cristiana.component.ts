@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Iniciacion, IniciacionForm, ResultIniciacion, ResultIniciaciones } from 'src/app/interface/iniciacion.interface';
 import { IniciacionService } from 'src/app/servicios/iniciacion.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -33,7 +34,8 @@ export class IniciacionCristianaComponent implements OnInit{
   constructor(
     private iniciacionService:IniciacionService,
     private toastr:ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
 
   }
@@ -68,6 +70,7 @@ export class IniciacionCristianaComponent implements OnInit{
         this.toastr.success(data.msg,'Registrado');
         this.mostrarIniciacion();
         this.cancelar();
+        this.wsService.emit('nueva-iniciacion');
       },
       error:(error)=>{
         console.log(error);

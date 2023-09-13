@@ -8,6 +8,7 @@ import { TiempoLiturgiaService } from 'src/app/servicios/tiempo-liturgia.service
 import { TipoLiturgiaService } from 'src/app/servicios/tipo-liturgia.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import Swal from 'sweetalert2';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 @Component({
   selector: 'app-tipo-liturgia',
   templateUrl: './tipo-liturgia.component.html',
@@ -52,7 +53,8 @@ export class TipoLiturgiaComponent implements OnInit{
     private tipoLiturgiaService:TipoLiturgiaService,
     private tiempoLiturgiaService:TiempoLiturgiaService,
     private liturgiaService:LiturgiaService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private wsService:WebsocketService
   ){
 
   }
@@ -110,6 +112,7 @@ export class TipoLiturgiaComponent implements OnInit{
         this.toastr.success(data.msg,'REGISTRADO');
         this.mostrarTipoLiturgia();
         this.cancelar();
+        this.wsService.emit('nueva-liturgia');
       },
       error:error=>{
         console.log(error);

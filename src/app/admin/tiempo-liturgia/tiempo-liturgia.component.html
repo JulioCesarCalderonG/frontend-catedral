@@ -24,7 +24,7 @@
         <th>N°</th>
         <th>Descripcion</th>
         <th>Editar</th>
-        <th>Eliminar</th>
+        <th>Habilitar/Deshabilitar</th>
       </tr>
     </thead>
     <tbody>
@@ -39,11 +39,16 @@
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
-        <td>
-          <button class="btn btn-danger" (click)="eliminarTiempoLiturgia(tiempoLiturgia.id)">
-            <i class="fa fa-solid fa-trash"></i>
-          </button>
-        </td>
+          <td *ngIf="tiempoLiturgia.estado===0">
+            <button class="btn btn-danger" (click)="eliminarTiempoLiturgia(tiempoLiturgia.id,1)">
+              <i class="fa fa-solid fa-lock-open"></i>
+            </button>
+          </td>
+          <td *ngIf="tiempoLiturgia.estado===1">
+            <button class="btn btn-danger" (click)="eliminarTiempoLiturgia(tiempoLiturgia.id,0)">
+              <i class="fa fa-solid fa-lock"></i>
+            </button>
+          </td>
       </tr>
     </tbody>
   </table>
@@ -71,6 +76,36 @@
           <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
             (click)="cancelar()">Cancelar</button>
           <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR TIEMPO LITURGIA -->
+<div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Tipo Liturgia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarTiempoLiturgia()">
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label class="control-label">Agregar Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <textarea class="form-control" [(ngModel)]="editarTiempoLiturgiaForm.descripcion" name="descripcion" id="" cols="30" rows="3"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
         </div>
       </form>
     </div>

@@ -9,6 +9,7 @@ import { AtencionService } from 'src/app/servicios/atencion.service';
 import { DirectorioService } from 'src/app/servicios/directorio.service';
 import { HorarioService } from 'src/app/servicios/horario.service';
 import { TipoAtencionService } from 'src/app/servicios/tipo-atencion.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -31,7 +32,8 @@ export class AtencionComponent implements OnInit{
     private tipoAtencionService:TipoAtencionService,
     private directorioService:DirectorioService,
     private fb:FormBuilder,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private wsService:WebsocketService
   ) {
     this.atencionForm=this.fb.group({
       id_directorio:['',Validators.required],
@@ -113,6 +115,7 @@ export class AtencionComponent implements OnInit{
         this.toastr.success(data.msg,'Registrado');
         this.mostrarAtencion();
         this.cancelar();
+        this.wsService.emit('nueva-atencion');
       },
       error:error=>{
         console.log(error);

@@ -10,6 +10,7 @@ import {
 } from 'src/app/interface/tipo.iniciacion.interface';
 import { IniciacionService } from 'src/app/servicios/iniciacion.service';
 import { TipoIniciacionService } from 'src/app/servicios/tipo-iniciacion.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -28,7 +29,8 @@ export class TipoIniciacionComponent implements OnInit {
     private iniciacionService: IniciacionService,
     private router: Router,
     private fb: FormBuilder,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private wsService:WebsocketService
   ) {
     this.iniciacionForm = this.fb.group({
       descripcion: ['', Validators.required],
@@ -75,6 +77,7 @@ export class TipoIniciacionComponent implements OnInit {
         this.toastr.success(data.msg,'Registrado');
         this.mostrarTipoIniciacion();
         this.cancelar();
+        this.wsService.emit('nueva-iniciacion');
       },
       error:error=>{
         console.log(error);

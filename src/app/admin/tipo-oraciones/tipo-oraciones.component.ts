@@ -9,6 +9,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import Swal from 'sweetalert2';
 import { OracionesService } from 'src/app/servicios/oraciones.service';
 import { Oracione, ResultOraciones } from 'src/app/interface/oracion.interface';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 
 @Component({
   selector: 'app-tipo-oraciones',
@@ -60,7 +61,8 @@ export class TipoOracionesComponent implements OnInit{
     private oracionService:OracionesService,
     private router: Router,
     private toastr: ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
 
   }
@@ -113,6 +115,7 @@ export class TipoOracionesComponent implements OnInit{
         this.toastr.success(data.msg,'REGISTRADO');
         this.mostrarOracion();
         this.cancelar();
+        this.wsService.emit('nueva-oracion');
       },
       error:error=>{
         console.log(error);

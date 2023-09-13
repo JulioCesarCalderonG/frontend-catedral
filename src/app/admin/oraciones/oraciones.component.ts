@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment.prod';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 
 @Component({
   selector: 'app-oraciones',
@@ -37,7 +38,8 @@ export class OracionesComponent implements OnInit{
     private oracionService:OracionesService,
     private fb:FormBuilder,
     private toastr:ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
   }
 
@@ -69,6 +71,7 @@ export class OracionesComponent implements OnInit{
         this.toastr.success(data.msg,'Registrado');
         this.mostrarOraciones();
         this.cancelar();
+        this.wsService.emit('nueva-oracion');
       },
       error:(error)=>{
         console.log(error);

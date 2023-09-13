@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Cancionero, CancioneroForm, ResultCancionero, ResultCancioneros } from 'src/app/interface/cancioner.interface';
 import { CancioneroService } from 'src/app/servicios/cancionero.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -34,7 +35,8 @@ export class CancioneroComponent implements OnInit{
   constructor(
     private cancioneroService:CancioneroService,
     private toastr:ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
 
   }
@@ -67,6 +69,7 @@ export class CancioneroComponent implements OnInit{
         this.toastr.success(data.msg,'Registrado');
         this.mostrarCancionero();
         this.cancelar();
+        this.wsService.emit('nueva-cancionero');
       },
       error:error=>{
         console.log(error);

@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Liturgia, LiturgiaForm, ResultLiturgia, ResultLiturgias } from 'src/app/interface/liturgia.interface';
 import { LiturgiaService } from 'src/app/servicios/liturgia.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -32,7 +33,8 @@ export class LiturgiaComponent implements OnInit{
   constructor(
     private liturgiaService:LiturgiaService,
     private toastr:ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
 
   }
@@ -68,6 +70,7 @@ export class LiturgiaComponent implements OnInit{
         this.toastr.success(data.msg,'Registrado');
         this.mostrarIniciacion();
         this.cancelar();
+        this.wsService.emit('nueva-liturgia');
       },
       error:(error)=>{
         console.log(error);

@@ -6,6 +6,7 @@ import { Cancionero, ResultCancioneros } from 'src/app/interface/cancioner.inter
 import { LogoTipoCancioneroForm, ResultTipoCancionero, ResultTipoCancioneros, TipoCancioneroForm, Tipocancionero } from 'src/app/interface/tipo.cancionero';
 import { CancioneroService } from 'src/app/servicios/cancionero.service';
 import { TipoCancioneroService } from 'src/app/servicios/tipo-cancionero.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -60,6 +61,7 @@ export class TipoCancioneroComponent implements OnInit{
     private cancioneroService:CancioneroService,
     private sanitizer: DomSanitizer,
     private toastr:ToastrService,
+    private wsService:WebsocketService
   ) {
 
   }
@@ -109,6 +111,7 @@ export class TipoCancioneroComponent implements OnInit{
           this.mostrarTipoCancionero();
           this.toastr.success(data.msg,'Registrado');
           this.cancelar();
+          this.wsService.emit('nueva-cancionero');
         },
         error:error=>{
           console.log(error);

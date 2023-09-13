@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LogoMaterialForm, Material, MaterialForm, ResultMaterialPastoral, ResultMaterialPastorales } from 'src/app/interface/material.interface';
 import { MaterialPastoralService } from 'src/app/servicios/material-pastoral.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -48,7 +49,8 @@ export class MaterialesPastoralesComponent implements OnInit{
     private materialService: MaterialPastoralService,
     private router: Router,
     private toastr: ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
 
   }
@@ -87,6 +89,7 @@ export class MaterialesPastoralesComponent implements OnInit{
         this.toastr.success(data.msg,'REGISTRADO');
         this.mostrarMaterial();
         this.cancelar();
+        this.wsService.emit('nueva-material');
       },
       error:error=>{
         console.log(error);
