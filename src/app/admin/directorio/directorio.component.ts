@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Directorio, DirectorioForm, ResultDirectorio, ResultDirectorios } from 'src/app/interface/directorio.interface';
 import { DirectorioService } from 'src/app/servicios/directorio.service';
 import { LocationService } from 'src/app/servicios/location.service';
+import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
@@ -48,7 +49,8 @@ export class DirectorioComponent implements OnInit{
     private locationService:LocationService,
     private router:Router,
     private toastr:ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private wsService:WebsocketService
   ){
   }
   ngOnInit(): void {
@@ -128,6 +130,7 @@ export class DirectorioComponent implements OnInit{
               data.msg,
               'success'
             );
+            this.wsService.emit('nueva-ubicacion');
             this.mostrarDirectorio();
           },
           error:(error)=>{
