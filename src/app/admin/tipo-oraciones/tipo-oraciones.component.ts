@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { OracionesService } from 'src/app/servicios/oraciones.service';
 import { Oracione, ResultOraciones } from 'src/app/interface/oracion.interface';
 import { WebsocketService } from 'src/app/socket/websocket.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-tipo-oraciones',
@@ -29,12 +30,7 @@ export class TipoOracionesComponent implements OnInit{
     titulo:'',
     logo:''
   }
-  editarTipoOracionForm:TipoOracionesForm={
-    descripcion:'',
-    id_oracion:'',
-    subdescripcion:'',
-    titulo:'',
-  }
+  editarTipoOracionForm:FormGroup;
   logoTipoOracionForm:LogoTipoOracionesForm={
     logo:''
   }
@@ -62,9 +58,15 @@ export class TipoOracionesComponent implements OnInit{
     private router: Router,
     private toastr: ToastrService,
     private sanitizer: DomSanitizer,
-    private wsService:WebsocketService
+    private wsService:WebsocketService,
+    private fb:FormBuilder
   ){
-
+    this.editarTipoOracionForm=this.fb.group({
+      descripcion:["",Validators.required],
+      id_oracion:['',Validators.required],
+      subdescripcion:['',Validators.required],
+      titulo:['',Validators.required],
+    })
   }
 
   ngOnInit(): void {
@@ -124,13 +126,10 @@ export class TipoOracionesComponent implements OnInit{
     })
   }
   editarTipoOracion(){
-    if (this.editarTipoOracionForm.descripcion==='' || this.editarTipoOracionForm.id_oracion===''
-      || this.editarTipoOracionForm.subdescripcion==='' || this.editarTipoOracionForm.titulo===''
-    ) {
-      this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
-      return;
-    }
-    this.tipoOracionService.putTipoOracion(this.editarTipoOracionForm,this.ids).subscribe({
+
+    console.log(this.editarTipoOracionForm.get('descripcion')?.value);
+
+    /* this.tipoOracionService.putTipoOracion(this.editarTipoOracionForm,this.ids).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'EDITADO');
         this.mostrarTipoOracion();
@@ -139,7 +138,7 @@ export class TipoOracionesComponent implements OnInit{
         console.log(error);
 
       }
-    })
+    }) */
   }
   editarLogoTipoOracion(){
     if (this.logoTipoOracionForm.logo==='') {
@@ -163,13 +162,15 @@ export class TipoOracionesComponent implements OnInit{
   obtenerDatos(id:number){
     this.tipoOracionService.getTipoOracionID(id).subscribe({
       next:(data:ResultTipoOracion)=>{
+        console.log(data.tipooracion.descripcion);
+
         this.ids=String(id);
-        this.editarTipoOracionForm={
+        this.editarTipoOracionForm.setValue({
           descripcion:data.tipooracion.descripcion,
           titulo:data.tipooracion.titulo,
           id_oracion:String(data.tipooracion.id_oracion),
           subdescripcion:data.tipooracion.subdescripcion,
-        }
+        })
       },
       error:error=>{
         console.log(error);
@@ -297,13 +298,12 @@ export class TipoOracionesComponent implements OnInit{
       titulo:'',
       logo:''
     }
-    this.editarTipoOracionForm={
+    this.editarTipoOracionForm.setValue({
       descripcion:'',
       id_oracion:'',
       subdescripcion:'',
       titulo:'',
-      logo:''
-    }
+    })
     this.ids = '';
     this.reset();
   }
