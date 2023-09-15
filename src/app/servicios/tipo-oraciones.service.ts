@@ -22,7 +22,7 @@ export class TipoOracionesService {
   postTipoOracion(body:FormData):Observable<any>{
     return this.http.post(this.url,body);
   }
-  putTipoOracion(body:TipoOracionesForm,id:string|number):Observable<any>{
+  putTipoOracion(body:FormData,id:string|number):Observable<any>{
     return this.http.put(`${this.url}/${id}`,body);
   }
   putLogoTipoOracion(body:FormData,id:string|number):Observable<any>{

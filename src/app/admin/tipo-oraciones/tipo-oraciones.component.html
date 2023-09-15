@@ -83,7 +83,6 @@
               <input type="file" #fileInputLogo
                 class="form-control"
                 (change)="capturarFileLogo($event)"
-
               >
             </div>
             </div>
@@ -94,7 +93,10 @@
              [(ngModel)]="tipoOracionForm.titulo" name="titulo">
           </div>
           <div class="form-group">
-            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="tipoOracionForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor>
+            <!-- <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="tipoOracionForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor> -->
+            <ckeditor
+              [(ngModel)]="tipoOracionForm.descripcion" name="descripcion">
+            </ckeditor>
           </div>
           <div class="form-group">
             <label class="control-label">Sub Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
@@ -129,24 +131,26 @@
         <h4 class="modal-title" id="myLargeModalLabel">Editar Tipo Oracion</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
       </div>
-      <form [formGroup]="editarTipoOracionForm" (ngSubmit)="editarTipoOracion()">
+      <form (ngSubmit)="editarTipoOracion()">
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Titulo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
             <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
-              formControlName="titulo"
-            >
+             [(ngModel)]="editarTipoOracionForm.titulo" name="titulo">
           </div>
           <div class="form-group">
-            <angular-editor [placeholder]="'Enter text here...'"  [config]="editorConfig" formControlName="descripcion"></angular-editor>
+            <!-- <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editarTipoOracionForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor> -->
+            <ckeditor
+              [(ngModel)]="editarTipoOracionForm.descripcion" name="descripcion">
+            </ckeditor>
           </div>
           <div class="form-group">
             <label class="control-label">Sub Descripcion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
-            <textarea class="form-control" rows="5" formControlName="subdescripcion"></textarea>
+            <textarea class="form-control" rows="5" [(ngModel)]="editarTipoOracionForm.subdescripcion" name="subdescripcion"></textarea>
           </div>
           <div class="form-group">
             <label class="control-label">Tipo Oracion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
-            <select class="form-control custom-select" formControlName="id_oracion">
+            <select class="form-control custom-select" [(ngModel)]="editarTipoOracionForm.id_oracion" name="id_oracion">
               <option value="">Seleccionar una opcion</option>
               <option *ngFor="let oracion of listOracion" value="{{oracion.id}}" >{{oracion.nombre}}</option>
             </select>
@@ -155,7 +159,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
             (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn btn-info waves-effect text-left" [disabled]="editarTipoOracionForm.invalid">Editar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
         </div>
       </form>
     </div>

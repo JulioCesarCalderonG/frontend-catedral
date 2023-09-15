@@ -103,8 +103,10 @@
           <div class="form-group">
             <label class="control-label">Descripcion <i style="color: red; font-size: 12px;"
                 class="fa fa-solid fa-star-of-life"></i></label>
-            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="tipoCancioneroForm.descripcion"
-              name="descripcion" [config]="editorConfig"></angular-editor>
+              <ckeditor
+              [(ngModel)]="tipoCancioneroForm.descripcion"
+              name="descripcion">
+            </ckeditor>
           </div>
           <div class="form-group">
             <label class="control-label">Numero de Cancion <i style="color: red; font-size: 12px;"
@@ -161,8 +163,10 @@
           <div class="form-group">
             <label class="control-label">Descripcion <i style="color: red; font-size: 12px;"
                 class="fa fa-solid fa-star-of-life"></i></label>
-            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editarTipoCancioneroForm.descripcion"
-              name="descripcion" [config]="editorConfig"></angular-editor>
+              <ckeditor
+              [(ngModel)]="editarTipoCancioneroForm.descripcion"
+              name="descripcion">
+            </ckeditor>
           </div>
           <div class="form-group">
             <label class="control-label">Numero de Cancion <i style="color: red; font-size: 12px;"

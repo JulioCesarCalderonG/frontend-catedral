@@ -15,7 +15,25 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-tipo-oraciones',
   templateUrl: './tipo-oraciones.component.html',
-  styleUrls: ['./tipo-oraciones.component.css']
+  styleUrls: ['./tipo-oraciones.component.css'],
+  template: `
+  <ckeditor
+    [(ngModel)]="ckeditorContent"
+    [config]="{uiColor: '#99000'}"
+    [readonly]="false"
+    (change)="onChange($event)"
+    (editorChange)="onEditorChange($event)" <!-- CKEditor change event -->
+    (ready)="onReady($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    (contentDom)="onContentDom($event)"
+    (fileUploadRequest)="onFileUploadRequest($event)"
+    (fileUploadResponse)="onFileUploadResponse($event)"
+    (paste)="onPaste($event)"
+    (drop)="onDrop($event)"
+    debounce="500">
+  </ckeditor>
+  `,
 })
 export class TipoOracionesComponent implements OnInit{
 
@@ -30,7 +48,12 @@ export class TipoOracionesComponent implements OnInit{
     titulo:'',
     logo:''
   }
-  editarTipoOracionForm:FormGroup;
+  editarTipoOracionForm:TipoOracionesForm={
+    descripcion:'',
+    id_oracion:'',
+    subdescripcion:'',
+    titulo:''
+  }
   logoTipoOracionForm:LogoTipoOracionesForm={
     logo:''
   }
@@ -40,18 +63,48 @@ export class TipoOracionesComponent implements OnInit{
   @ViewChild('fileInputLogo', { static: false }) fileInputLogo?: ElementRef;
   editorConfig: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: '200px',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      {class: 'arial', name: 'Arial'},
+      {class: 'times-new-roman', name: 'Times New Roman'},
+      {class: 'calibri', name: 'Calibri'},
+      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+    ],
+    customClasses: [
+    {
+      name: 'quote',
+      class: 'quote',
+    },
+    {
+      name: 'redText',
+      class: 'redText'
+    },
+    {
+      name: 'titleText',
+      class: 'titleText',
+      tag: 'h1',
+    },
+  ],
+  sanitize: true,
+  toolbarPosition: 'top',
+  toolbarHiddenButtons: [
+    ['bold', 'italic'],
+    ['fontSize']
+  ]
   };
+  ckeditorContent:string='';
   constructor(
     private tipoOracionService:TipoOracionesService,
     private oracionService:OracionesService,
@@ -61,12 +114,6 @@ export class TipoOracionesComponent implements OnInit{
     private wsService:WebsocketService,
     private fb:FormBuilder
   ){
-    this.editarTipoOracionForm=this.fb.group({
-      descripcion:["",Validators.required],
-      id_oracion:['',Validators.required],
-      subdescripcion:['',Validators.required],
-      titulo:['',Validators.required],
-    })
   }
 
   ngOnInit(): void {
@@ -126,19 +173,28 @@ export class TipoOracionesComponent implements OnInit{
     })
   }
   editarTipoOracion(){
-
-    console.log(this.editarTipoOracionForm.get('descripcion')?.value);
-
-    /* this.tipoOracionService.putTipoOracion(this.editarTipoOracionForm,this.ids).subscribe({
+    if (this.editarTipoOracionForm.descripcion==='' || this.editarTipoOracionForm.id_oracion===''
+    || this.editarTipoOracionForm.subdescripcion==='' || this.editarTipoOracionForm.titulo===''
+    ) {
+      this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('titulo',this.editarTipoOracionForm.titulo);
+    formData.append('descripcion',this.editarTipoOracionForm.descripcion);
+    formData.append('subdescripcion',this.editarTipoOracionForm.subdescripcion);
+    formData.append('id_oracion',this.editarTipoOracionForm.id_oracion);
+    this.tipoOracionService.putTipoOracion(formData,this.ids).subscribe({
       next:(data)=>{
-        this.toastr.success(data.msg,'EDITADO');
-        this.mostrarTipoOracion();
+        this.toastr.success(data.msg,'Editado');
+        this.mostrarOracion();
+        this.wsService.emit('nueva-oracion');
       },
       error:error=>{
         console.log(error);
 
       }
-    }) */
+    })
   }
   editarLogoTipoOracion(){
     if (this.logoTipoOracionForm.logo==='') {
@@ -165,12 +221,12 @@ export class TipoOracionesComponent implements OnInit{
         console.log(data.tipooracion.descripcion);
 
         this.ids=String(id);
-        this.editarTipoOracionForm.setValue({
+        this.editarTipoOracionForm={
           descripcion:data.tipooracion.descripcion,
           titulo:data.tipooracion.titulo,
           id_oracion:String(data.tipooracion.id_oracion),
           subdescripcion:data.tipooracion.subdescripcion,
-        })
+        }
       },
       error:error=>{
         console.log(error);
@@ -298,12 +354,12 @@ export class TipoOracionesComponent implements OnInit{
       titulo:'',
       logo:''
     }
-    this.editarTipoOracionForm.setValue({
+    this.editarTipoOracionForm={
       descripcion:'',
       id_oracion:'',
       subdescripcion:'',
       titulo:'',
-    })
+    }
     this.ids = '';
     this.reset();
   }

@@ -13,7 +13,25 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-tipo-cancionero',
   templateUrl: './tipo-cancionero.component.html',
-  styleUrls: ['./tipo-cancionero.component.css']
+  styleUrls: ['./tipo-cancionero.component.css'],
+  template: `
+  <ckeditor
+    [(ngModel)]="ckeditorContent"
+    [config]="{uiColor: '#99000'}"
+    [readonly]="false"
+    (change)="onChange($event)"
+    (editorChange)="onEditorChange($event)" <!-- CKEditor change event -->
+    (ready)="onReady($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    (contentDom)="onContentDom($event)"
+    (fileUploadRequest)="onFileUploadRequest($event)"
+    (fileUploadResponse)="onFileUploadResponse($event)"
+    (paste)="onPaste($event)"
+    (drop)="onDrop($event)"
+    debounce="500">
+  </ckeditor>
+  `,
 })
 export class TipoCancioneroComponent implements OnInit{
 

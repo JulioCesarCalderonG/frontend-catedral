@@ -70,7 +70,10 @@
             <input type="date" class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="tipoLiturgiaForm.fecha" name="fecha">
           </div>
           <div class="form-group">
-            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="tipoLiturgiaForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor>
+
+            <ckeditor
+            [(ngModel)]="tipoLiturgiaForm.descripcion" name="descripcion">
+            </ckeditor>
           </div>
           <div class="form-group">
             <label class="control-label">Liturgia <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
@@ -121,7 +124,9 @@
             <input type="date" class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="editarTipoLiturgiaForm.fecha" name="fecha">
           </div>
           <div class="form-group">
-            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="editarTipoLiturgiaForm.descripcion" name="descripcion" [config]="editorConfig"></angular-editor>
+            <ckeditor
+            [(ngModel)]="editarTipoLiturgiaForm.descripcion" name="descripcion">
+            </ckeditor>
           </div>
           <div class="form-group">
             <label class="control-label">Liturgia <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>

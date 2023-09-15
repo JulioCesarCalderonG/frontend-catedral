@@ -23,7 +23,7 @@ import { TipoLiturgiaComponent } from './tipo-liturgia/tipo-liturgia.component';
 import { TiempoLiturgiaComponent } from './tiempo-liturgia/tiempo-liturgia.component';
 import { TipoIniciacionComponent } from './tipo-iniciacion/tipo-iniciacion.component';
 import { AtencionComponent } from './atencion/atencion.component';
-
+import { CKEditorModule } from 'ng2-ckeditor';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -51,7 +51,8 @@ import { AtencionComponent } from './atencion/atencion.component';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularEditorModule
+    AngularEditorModule,
+    CKEditorModule
   ]
 })
 export class AdminModule { }

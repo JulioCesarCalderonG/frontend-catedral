@@ -13,7 +13,7 @@ import { HomeModule } from './home/home.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { CKEditorModule } from 'ng2-ckeditor';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -32,6 +32,7 @@ import { environment } from '../environments/environment';
     ToastrModule.forRoot(),
     AngularEditorModule,
     SocketIoModule.forRoot(config),
+    CKEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
