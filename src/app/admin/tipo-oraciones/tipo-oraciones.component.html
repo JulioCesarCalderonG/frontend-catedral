@@ -25,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tipoOracion of listTipoOracion">
+      <tr *ngFor="let tipoOracion of listTipoOracion! | paginate: { itemsPerPage: 5, currentPage: p }">
         <td>{{tipoOracion.id}}</td>
         <td>{{tipoOracion.titulo}}</td>
         <td>{{tipoOracion.descripcion}}</td>
@@ -60,6 +60,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR TIPO ORACION -->

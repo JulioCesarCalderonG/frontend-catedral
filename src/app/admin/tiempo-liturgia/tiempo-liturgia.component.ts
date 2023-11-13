@@ -21,6 +21,7 @@ export class TiempoLiturgiaComponent implements OnInit{
   }
   ids:string='';
   estado:string='1';
+  p: number = 1;
   constructor(
     private tiempoLiturgiaService:TiempoLiturgiaService,
     private toastr:ToastrService,

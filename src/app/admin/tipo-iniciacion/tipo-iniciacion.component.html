@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let iniciacion of listTipoIniciacion">
+      <tr *ngFor="let iniciacion of listTipoIniciacion! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{iniciacion.id}}</td>
         <td>{{iniciacion.descripcion}}</td>
         <td>{{iniciacion.Iniciacion.nombre}}</td>
@@ -37,6 +37,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR TIPO INICIACION -->

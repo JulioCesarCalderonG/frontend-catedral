@@ -24,6 +24,7 @@ export class TipoIniciacionComponent implements OnInit {
   iniciacionForm: FormGroup;
   editarIniciacionForm: FormGroup;
   ids:string='';
+  p: number = 1;
   constructor(
     private tipoIniciacionService: TipoIniciacionService,
     private iniciacionService: IniciacionService,

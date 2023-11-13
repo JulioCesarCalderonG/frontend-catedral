@@ -18,7 +18,8 @@ export class LiturgiaComponent implements OnInit{
   ids:string='';
   liturgiaForm:LiturgiaForm={
     logo:'',
-    nombre:''
+    nombre:'',
+    pdf:''
   };
   editarLiturgiaForm:LiturgiaForm={
     nombre:''
@@ -26,10 +27,20 @@ export class LiturgiaComponent implements OnInit{
   logoLiturgiaForm:LiturgiaForm={
     logo:''
   };
+  pdfLiturgiaForm:LiturgiaForm={
+    logo:''
+  };
   url=`${environment.backendUrl}/liturgia/imagen`;
+  urlPDF = `${environment.backendUrl}/liturgia/pdf`;
   imgDefault:string='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg'
   uploadFiles?: File;
   @ViewChild('fileInput', {static: false}) fileInput?: ElementRef;
+
+  imgDefaultPDF: string =
+    'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+  uploadFilePDF?: File;
+  @ViewChild('fileInputPDF', { static: false }) fileInputPDF?: ElementRef;
+  p: number = 1;
   constructor(
     private liturgiaService:LiturgiaService,
     private toastr:ToastrService,
@@ -40,11 +51,10 @@ export class LiturgiaComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.mostrarIniciacion();
+    this.mostrarLiturgia()
   }
 
-
-  mostrarIniciacion(){
+  mostrarLiturgia(){
     this.liturgiaService.getLiturgia(this.estado).subscribe({
       next:(data:ResultLiturgias)=>{
         this.listLiturgia = data.liturgia;
@@ -58,17 +68,18 @@ export class LiturgiaComponent implements OnInit{
     })
   }
   agregarLiturgia(){
-    if (this.liturgiaForm.logo==='' || this.liturgiaForm.nombre==='') {
+    if (this.liturgiaForm.logo==='' || this.liturgiaForm.nombre==='', this.liturgiaForm.pdf==='') {
       this.toastr.warning('INGRESE TODOS LOS DATOS SOLICITADOS','ERROR DE DATOS');
       return;
     }
     const formData = new FormData();
     formData.append('nombre',this.liturgiaForm.nombre!);
     formData.append('logo',this.uploadFiles!);
+    formData.append('archivo', this.uploadFilePDF!);
     this.liturgiaService.postLiturgia(formData).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'Registrado');
-        this.mostrarIniciacion();
+        this.mostrarLiturgia();
         this.cancelar();
         this.wsService.emit('nueva-liturgia');
       },
@@ -86,7 +97,7 @@ export class LiturgiaComponent implements OnInit{
     this.liturgiaService.putLiturgia(this.editarLiturgiaForm,this.ids).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'Editado');
-        this.mostrarIniciacion();
+        this.mostrarLiturgia();
       },
       error:(error)=>{
         console.log(error);
@@ -104,8 +115,27 @@ export class LiturgiaComponent implements OnInit{
     this.liturgiaService.putLogoLiturgia(formData,this.ids).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'EDITADO');
-        this.mostrarIniciacion();
+        this.mostrarLiturgia();
         this.reset();
+      },
+      error:(error)=>{
+        console.log(error);
+
+      }
+    })
+  }
+  editarPDFLiturgia(){
+    if (this.pdfLiturgiaForm.logo==='') {
+      this.toastr.warning('INGRESE TODOS LOS DATOS SOLICITADOS','ERROR DE DATOS');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('archivo',this.uploadFilePDF!);
+    this.liturgiaService.putPDFLiturgia(formData,this.ids).subscribe({
+      next:(data)=>{
+        this.toastr.success(data.msg,'EDITADO');
+        this.mostrarLiturgia();
+        this.cancelar();
       },
       error:(error)=>{
         console.log(error);
@@ -147,7 +177,7 @@ export class LiturgiaComponent implements OnInit{
               data.msg,
               'success'
             );
-            this.mostrarIniciacion();
+            this.mostrarLiturgia();
           },
           error:(error)=>{
             console.log(error);
@@ -202,6 +232,62 @@ export class LiturgiaComponent implements OnInit{
       });
     }
   }
+  capturarFileImagen(event: any) {
+    this.uploadFilePDF = event.target.files[0];
+    console.log(this.uploadFilePDF);
+    if (!this.uploadFilePDF) {
+      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN PDF');
+      this.liturgiaForm.pdf = '';
+      this.fileInputPDF!.nativeElement.value = '';
+      this.imgDefaultPDF =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      return;
+    }
+    if (this.uploadFilePDF!.size > 1072383) {
+      this.toastr.warning(
+        'El tamaño maximo es de 1 MB',
+        'ARCHIVO EXCEDE LO ESTIMADO'
+      );
+      this.liturgiaForm.pdf = '';
+      this.fileInputPDF!.nativeElement.value = '';
+      this.imgDefaultPDF =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      return;
+    } else {
+      this.extraserBase64(this.uploadFilePDF).then((imagen: any) => {
+        this.imgDefaultPDF = imagen.base;
+        this.liturgiaForm.pdf = 'cargado';
+      });
+    }
+  }
+  capturarFileImagen2(event: any) {
+    this.uploadFilePDF = event.target.files[0];
+    console.log(this.uploadFilePDF);
+    if (!this.uploadFilePDF) {
+      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN PDF');
+      this.pdfLiturgiaForm.pdf = '';
+      this.fileInputPDF!.nativeElement.value = '';
+      this.imgDefaultPDF =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      return;
+    }
+    if (this.uploadFilePDF!.size > 1072383) {
+      this.toastr.warning(
+        'El tamaño maximo es de 1 MB',
+        'ARCHIVO EXCEDE LO ESTIMADO'
+      );
+      this.pdfLiturgiaForm.pdf = '';
+      this.fileInputPDF!.nativeElement.value = '';
+      this.imgDefaultPDF =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      return;
+    } else {
+      this.extraserBase64(this.uploadFilePDF).then((imagen: any) => {
+        this.imgDefaultPDF = imagen.base;
+        this.pdfLiturgiaForm.pdf = 'cargado';
+      });
+    }
+  }
   extraserBase64 = async($event :any)=> new Promise((resolve, reject)=>{
     try {
       const unsafeImg = window.URL.createObjectURL($event);
@@ -229,18 +315,22 @@ export class LiturgiaComponent implements OnInit{
   showEvent(event:any){
     console.log(event.target.value);
     this.estado = event.target.value;
-    this.mostrarIniciacion();
+    this.mostrarLiturgia();
   }
   cancelar(){
     this.liturgiaForm={
       nombre:'',
       logo:'',
+      pdf:''
     }
     this.editarLiturgiaForm={
       nombre:'',
     }
     this.logoLiturgiaForm={
       logo:'',
+    }
+    this.pdfLiturgiaForm={
+      pdf:''
     }
     this.ids='';
     this.reset();

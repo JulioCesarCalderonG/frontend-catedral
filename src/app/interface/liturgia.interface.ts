@@ -14,9 +14,11 @@ export interface Liturgia {
   id:     number;
   nombre: string;
   logo:   string;
+  pdf:    string;
   estado: number;
 }
 export interface LiturgiaForm{
   nombre?:string,
-  logo?:string
+  logo?:string,
+  pdf?:string
 }

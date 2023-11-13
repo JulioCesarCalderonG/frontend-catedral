@@ -29,12 +29,12 @@ export class SidebarService {
       ]
     },
     {
-      titulo: 'Liturgias',
+      titulo: 'Celebraciones',
       icono: 'fa fa-solid fa-signature',
       submenu: [
-        { titulo: 'Liturgias', url: 'liturgia' },
+        { titulo: 'Celebraciones', url: 'liturgia' },/*
         { titulo: 'Tiempo Liturgias', url: 'tiempo-liturgia' },
-        { titulo: 'Tipo Liturgias', url: 'tipo-liturgia' },
+        { titulo: 'Tipo Liturgias', url: 'tipo-liturgia' }, */
       ]
     },
     {
@@ -58,7 +58,7 @@ export class SidebarService {
       icono: 'fa fa-solid fa-house-chimney',
       submenu: [
         { titulo: 'Mostrar Ministerios', url: 'ministerio' },
-
+        { titulo: 'Mostrar Tipos Ministerios', url: 'tipo-ministerio' },
       ]
     },
     {

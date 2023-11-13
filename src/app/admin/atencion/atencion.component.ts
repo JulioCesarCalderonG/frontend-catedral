@@ -26,6 +26,7 @@ export class AtencionComponent implements OnInit{
   atencionForm:FormGroup;
   editarAtencionForm:FormGroup;
   ids:string='';
+  p: number = 1;
   constructor(
     private atencionServicie:AtencionService,
     private horarioService:HorarioService,

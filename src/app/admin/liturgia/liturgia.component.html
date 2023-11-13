@@ -21,14 +21,16 @@
       <tr>
         <th>N°</th>
         <th>Nombre</th>
-        <th>Logo</th>
+        <th>Ver Logo</th>
+        <th>Ver PDF</th>
         <th>Editar imagen</th>
+        <th>Editar PDF</th>
         <th>Editar</th>
         <th>Habilitar/Deshabilitar</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let liturgia of listLiturgia">
+      <tr *ngFor="let liturgia of listLiturgia! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{liturgia.id}}</td>
         <td>{{liturgia.nombre}}</td>
         <td>
@@ -37,9 +39,25 @@
           </div>
         </td>
         <td>
+          <a class="btn btn-secondary"
+            href="{{urlPDF}}/{{liturgia.pdf}}"
+            target="_blank"
+            >
+            <i class="fa fa-solid fa-eye"></i>
+          </a>
+        </td>
+        <td>
           <button class="btn btn-primary"  data-toggle="modal"
           data-target=".editarImagen" (click)="obtenerDatos(liturgia.id)">
             <i class="fa fa-solid fa-images"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-primary"
+          data-toggle="modal" data-target=".modalPDF"
+          (click)="obtenerDatos(liturgia.id)"
+          >
+            <i class="fa fa-solid fa-file-pdf"></i>
           </button>
         </td>
         <td>
@@ -61,6 +79,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR LITURGIA -->
@@ -82,6 +102,13 @@
             <input type="file" #fileInput
               class="form-control"
               (change)="capturarFile($event)"
+            >
+          </div>
+          <div class="form-group">
+            <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="file" #fileInputPDF
+              class="form-control"
+              (change)="capturarFileImagen($event)"
             >
           </div>
           <div class="form-group">
@@ -158,6 +185,41 @@
           <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
             (click)="cancelar()">Cancelar</button>
           <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR PDF -->
+<div class="modal fade modalPDF show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar PDF</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarPDFLiturgia()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputPDF
+                class="form-control"
+                (change)="capturarFileImagen2($event)"
+              >
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
         </div>
       </form>
     </div>

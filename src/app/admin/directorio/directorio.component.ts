@@ -4,8 +4,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Directorio, DirectorioForm, ResultDirectorio, ResultDirectorios } from 'src/app/interface/directorio.interface';
+import { ResultTipoDirectorios, TipoDirectorio } from 'src/app/interface/tipo.directorio.interface';
 import { DirectorioService } from 'src/app/servicios/directorio.service';
 import { LocationService } from 'src/app/servicios/location.service';
+import { TipoDirectorioService } from 'src/app/servicios/tipo-directorio.service';
 import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
@@ -18,6 +20,7 @@ import Swal from 'sweetalert2';
 export class DirectorioComponent implements OnInit{
 
   listDirectorio?:Directorio[];
+  listTipoDirectorio?:TipoDirectorio[];
   estado:string='0';
   directorioForm:DirectorioForm={
     archivo:'',
@@ -25,13 +28,15 @@ export class DirectorioComponent implements OnInit{
     logo:'',
     nombre:'',
     social:'',
-    telefono:''
+    telefono:'',
+    tipo_directorio:''
   };
   editarDirectorioForm:DirectorioForm={
     direccion:'',
     nombre:'',
     social:'',
-    telefono:''
+    telefono:'',
+    tipo_directorio:''
   }
   ids:string='';
   urlImagen=`${environment.backendUrl}/directorio/imagen`;
@@ -44,8 +49,10 @@ export class DirectorioComponent implements OnInit{
   imgDefaultImagen:string='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg'
   uploadFileImagen?: File;
   @ViewChild('fileInputImagen', {static: false}) fileInputImagen?: ElementRef;
+  p: number = 1;
   constructor(
     private directorioService:DirectorioService,
+    private tipoDirectorioService:TipoDirectorioService,
     private locationService:LocationService,
     private router:Router,
     private toastr:ToastrService,
@@ -55,6 +62,7 @@ export class DirectorioComponent implements OnInit{
   }
   ngOnInit(): void {
     this.mostrarDirectorio();
+    this.mostrarTipoDirectorio();
   }
   mostrarDirectorio(){
     this.directorioService.getDirectorio(this.estado).subscribe({
@@ -66,8 +74,18 @@ export class DirectorioComponent implements OnInit{
       }
     })
   }
+  mostrarTipoDirectorio(){
+    this.tipoDirectorioService.getTipoDirectorio('1').subscribe({
+      next:(data:ResultTipoDirectorios)=>{
+        this.listTipoDirectorio= data.tipoDirectorio;
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+    })
+  }
   agregarDirectorio(){
-    if (this.directorioForm.archivo==='' || this.directorioForm.logo==='' || this.directorioForm.nombre==='' || this.directorioForm.direccion==='') {
+    if (this.directorioForm.archivo==='' || this.directorioForm.logo==='' || this.directorioForm.nombre==='' || this.directorioForm.direccion==='' || this.directorioForm.tipo_directorio==='') {
       this.toastr.warning('Complete los datos que son obligatorios','ALERTA');
       return;
     }
@@ -79,7 +97,7 @@ export class DirectorioComponent implements OnInit{
       formData.append('social',this.directorioForm.social!);
       formData.append('logo',this.uploadFileLogo!);
       formData.append('archivo',this.uploadFileImagen!);
-
+      formData.append('tipo_directorio',this.directorioForm.tipo_directorio);
       this.directorioService.postDirectorio(formData).subscribe({
         next:(data)=>{
           this.toastr.success(data.msg,'REGISTRADO');
@@ -101,6 +119,7 @@ export class DirectorioComponent implements OnInit{
       formData.append('telefono',this.editarDirectorioForm.telefono!);
       formData.append('direccion',this.editarDirectorioForm.direccion);
       formData.append('social',this.editarDirectorioForm.social!);
+      formData.append('tipo_directorio',this.editarDirectorioForm.tipo_directorio);
     this.directorioService.putDirectorio(formData,this.ids).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'EDITADO');
@@ -176,6 +195,7 @@ export class DirectorioComponent implements OnInit{
       next:(data:ResultDirectorio)=>{
         this.ids=String(id);
         this.editarDirectorioForm={
+          tipo_directorio:String(data.directorio.tipo_directorio),
           direccion:data.directorio.direccion,
           nombre:data.directorio.nombre,
           social:data.directorio.social,
@@ -282,13 +302,15 @@ export class DirectorioComponent implements OnInit{
       logo:'',
       nombre:'',
       social:'',
-      telefono:''
+      telefono:'',
+      tipo_directorio:''
     };
     this.editarDirectorioForm={
       direccion:'',
       nombre:'',
       social:'',
-      telefono:''
+      telefono:'',
+      tipo_directorio:''
     }
     this.ids='';
   }

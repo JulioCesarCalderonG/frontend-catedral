@@ -44,7 +44,7 @@ export class MaterialesPastoralesComponent implements OnInit{
     'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
   uploadFilePDF?: File;
   @ViewChild('fileInputPDF', { static: false }) fileInputPDF?: ElementRef;
-
+  p: number = 1;
   constructor(
     private materialService: MaterialPastoralService,
     private router: Router,
@@ -225,7 +225,7 @@ export class MaterialesPastoralesComponent implements OnInit{
     this.uploadFilePDF = event.target.files[0];
     console.log(this.uploadFilePDF);
     if (!this.uploadFilePDF) {
-      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN LOGO');
+      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN PDF');
       this.materialForm.pdf = '';
       this.fileInputPDF!.nativeElement.value = '';
       this.imgDefaultPDF =
@@ -281,7 +281,7 @@ export class MaterialesPastoralesComponent implements OnInit{
     this.uploadFilePDF = event.target.files[0];
     console.log(this.uploadFilePDF);
     if (!this.uploadFilePDF) {
-      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN LOGO');
+      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN PDF');
       this.pdfMaterialForm.pdf = '';
       this.fileInputPDF!.nativeElement.value = '';
       this.imgDefaultPDF =

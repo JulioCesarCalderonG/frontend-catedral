@@ -25,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let material of listMaterial">
+      <tr *ngFor="let material of listMaterial! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{material.id}}</td>
         <td>{{material.nombre}}</td>
         <td>{{material.titulo}}</td>
@@ -55,7 +55,7 @@
           data-toggle="modal" data-target=".modalPDF"
           (click)="obtenerDatos(material.id)"
           >
-            <i class="fa fa-solid fa-images"></i>
+            <i class="fa fa-solid fa-file-pdf"></i>
           </button>
         </td>
         <td>
@@ -74,6 +74,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR MATERIAL -->

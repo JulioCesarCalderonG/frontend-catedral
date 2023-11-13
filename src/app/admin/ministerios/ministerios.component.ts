@@ -49,6 +49,7 @@ export class MinisteriosComponent implements OnInit {
     'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
   uploadFilePDF?: File;
   @ViewChild('fileInputPDF', { static: false }) fileInputPDF?: ElementRef;
+  p: number = 1;
   constructor(
     private ministerioService: MinisteriosService,
     private router: Router,
@@ -75,8 +76,8 @@ export class MinisteriosComponent implements OnInit {
     if (
       this.ministerioForm.nombre === '' ||
       this.ministerioForm.titulo === '' ||
-      this.ministerioForm.logo === '' ||
-      this.ministerioForm.pdf === ''
+      this.ministerioForm.logo === ''
+      //this.ministerioForm.pdf === ''
     ) {
       this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
       return;
@@ -85,7 +86,7 @@ export class MinisteriosComponent implements OnInit {
     formData.append('nombre', this.ministerioForm.nombre);
     formData.append('titulo', this.ministerioForm.titulo!);
     formData.append('logo', this.uploadFileLogo!);
-    formData.append('archivo', this.uploadFilePDF!);
+    //formData.append('archivo', this.uploadFilePDF!);
     this.ministerioService.postMinisterio(formData).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'REGISTRADO');

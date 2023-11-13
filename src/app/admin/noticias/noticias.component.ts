@@ -28,6 +28,7 @@ export class NoticiasComponent implements OnInit{
   uploadFiles?: File[];
   imagenUpload?:string='';
   @ViewChild('fileInput', {static: false}) fileInput?: ElementRef;
+  p: number = 1;
   constructor(
     private noticiaService:NoticiaService,
     private fb:FormBuilder,

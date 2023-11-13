@@ -22,7 +22,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let atencion of listAtencion">
+          <tr *ngFor="let atencion of listAtencion! | paginate: { itemsPerPage: 10, currentPage: p }">
               <td>{{atencion.id}}</td>
               <td>{{atencion.Directorio.nombre}}</td>
               <td>{{atencion.Horario.descripcion}}</td>
@@ -42,6 +42,8 @@
           </tr>
       </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR TIPO LITURGIA -->

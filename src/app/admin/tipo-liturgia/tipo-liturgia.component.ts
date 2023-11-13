@@ -67,6 +67,7 @@ export class TipoLiturgiaComponent implements OnInit{
       placeholder: 'Enter text here...',
 
   };
+  p: number = 1;
   constructor(
     private tipoLiturgiaService:TipoLiturgiaService,
     private tiempoLiturgiaService:TiempoLiturgiaService,

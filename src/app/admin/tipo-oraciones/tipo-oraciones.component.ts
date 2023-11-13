@@ -105,6 +105,7 @@ export class TipoOracionesComponent implements OnInit{
   ]
   };
   ckeditorContent:string='';
+  p: number = 1;
   constructor(
     private tipoOracionService:TipoOracionesService,
     private oracionService:OracionesService,

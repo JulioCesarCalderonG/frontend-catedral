@@ -74,6 +74,7 @@ export class TipoCancioneroComponent implements OnInit{
   imgDefault:string='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg'
   uploadFiles?: File;
   @ViewChild('fileInput', {static: false}) fileInput?: ElementRef;
+  p: number = 1;
   constructor(
     private tipoCancioneroService:TipoCancioneroService,
     private cancioneroService:CancioneroService,

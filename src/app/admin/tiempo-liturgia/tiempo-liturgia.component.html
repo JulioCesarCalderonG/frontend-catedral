@@ -28,7 +28,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tiempoLiturgia of listTiempoLiturgia">
+      <tr *ngFor="let tiempoLiturgia of listTiempoLiturgia! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{tiempoLiturgia.id}}</td>
         <td>{{tiempoLiturgia.descripcion}}</td>
         <td>
@@ -52,6 +52,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR TIEMPO LITURGIA -->

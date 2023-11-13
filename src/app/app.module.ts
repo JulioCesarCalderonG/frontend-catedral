@@ -15,6 +15,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { environment } from '../environments/environment';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { environment } from '../environments/environment';
     ToastrModule.forRoot(),
     AngularEditorModule,
     SocketIoModule.forRoot(config),
-    CKEditorModule
+    CKEditorModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

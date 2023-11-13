@@ -24,6 +24,8 @@ import { TiempoLiturgiaComponent } from './tiempo-liturgia/tiempo-liturgia.compo
 import { TipoIniciacionComponent } from './tipo-iniciacion/tipo-iniciacion.component';
 import { AtencionComponent } from './atencion/atencion.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { TipoMinisterioComponent } from './tipo-ministerio/tipo-ministerio.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -43,7 +45,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
     TipoLiturgiaComponent,
     TiempoLiturgiaComponent,
     TipoIniciacionComponent,
-    AtencionComponent
+    AtencionComponent,
+    TipoMinisterioComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +55,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
     ReactiveFormsModule,
     FormsModule,
     AngularEditorModule,
-    CKEditorModule
+    CKEditorModule,
+    NgxPaginationModule
   ]
 })
 export class AdminModule { }

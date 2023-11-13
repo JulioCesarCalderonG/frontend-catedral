@@ -30,7 +30,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let oraciones of listOraciones">
+      <tr *ngFor="let oraciones of listOraciones! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{oraciones.id}}</td>
         <td>{{oraciones.nombre}}</td>
         <td>
@@ -69,6 +69,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR ORACIONES -->

@@ -29,6 +29,9 @@ export class LiturgiaService {
   putLogoLiturgia(body:FormData,id:string|number):Observable<any>{
     return this.http.put(`${this.url}/imagen/${id}`,body);
   }
+  putPDFLiturgia(body: FormData, id: string): Observable<any> {
+    return this.http.put(`${this.url}/pdf/${id}`, body)
+  }
   deleteLiturgia(id:string|number,  estado:string):Observable<any>{
     return this.http.delete(`${this.url}/${id}`,{params:{estado}});
   }

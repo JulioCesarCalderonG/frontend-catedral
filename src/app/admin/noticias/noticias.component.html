@@ -30,7 +30,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let noticia of listNoticias">
+      <tr *ngFor="let noticia of listNoticias! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{noticia.ids}}</td>
         <td>{{noticia.descripcion}}</td>
         <td>{{noticia.titulo}}</td>
@@ -60,6 +60,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 <!-- AGREGAR NOTICIA -->
 <div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"

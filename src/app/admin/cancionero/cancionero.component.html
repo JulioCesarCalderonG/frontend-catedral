@@ -30,7 +30,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let cancionero of listCancionero">
+      <tr *ngFor="let cancionero of listCancionero! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{cancionero.ids}}</td>
         <td>{{cancionero.nombre}}</td>
         <td>
@@ -63,6 +63,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
 </div>
 
 <!-- AGREGAR CANCIONERO -->

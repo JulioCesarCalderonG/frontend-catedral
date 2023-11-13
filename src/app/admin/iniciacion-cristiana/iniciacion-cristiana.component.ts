@@ -31,6 +31,7 @@ export class IniciacionCristianaComponent implements OnInit{
   imgDefault:string='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg'
   uploadFiles?: File;
   @ViewChild('fileInput', {static: false}) fileInput?: ElementRef;
+  p: number = 1;
   constructor(
     private iniciacionService:IniciacionService,
     private toastr:ToastrService,
