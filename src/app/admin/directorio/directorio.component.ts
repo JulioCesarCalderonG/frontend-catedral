@@ -1,10 +1,24 @@
-import { Component, AfterViewInit, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Directorio, DirectorioForm, ResultDirectorio, ResultDirectorios } from 'src/app/interface/directorio.interface';
-import { ResultTipoDirectorios, TipoDirectorio } from 'src/app/interface/tipo.directorio.interface';
+import {
+  Directorio,
+  DirectorioForm,
+  ResultDirectorio,
+  ResultDirectorios,
+} from 'src/app/interface/directorio.interface';
+import {
+  ResultTipoDirectorios,
+  TipoDirectorio,
+} from 'src/app/interface/tipo.directorio.interface';
 import { DirectorioService } from 'src/app/servicios/directorio.service';
 import { LocationService } from 'src/app/servicios/location.service';
 import { TipoDirectorioService } from 'src/app/servicios/tipo-directorio.service';
@@ -15,303 +29,344 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-directorio',
   templateUrl: './directorio.component.html',
-  styleUrls: ['./directorio.component.css']
+  styleUrls: ['./directorio.component.css'],
 })
-export class DirectorioComponent implements OnInit{
-
-  listDirectorio?:Directorio[];
-  listTipoDirectorio?:TipoDirectorio[];
-  estado:string='0';
-  directorioForm:DirectorioForm={
-    archivo:'',
-    direccion:'',
-    logo:'',
-    nombre:'',
-    social:'',
-    telefono:'',
-    tipo_directorio:''
+export class DirectorioComponent implements OnInit {
+  listDirectorio?: Directorio[];
+  listTipoDirectorio?: TipoDirectorio[];
+  estado: string = '0';
+  directorioForm: DirectorioForm = {
+    archivo: '',
+    direccion: '',
+    logo: '',
+    nombre: '',
+    social: '',
+    telefono: '',
+    tipo_directorio: '',
+    padre: '',
   };
-  editarDirectorioForm:DirectorioForm={
-    direccion:'',
-    nombre:'',
-    social:'',
-    telefono:'',
-    tipo_directorio:''
-  }
-  ids:string='';
-  urlImagen=`${environment.backendUrl}/directorio/imagen`;
-  urlLogo=`${environment.backendUrl}/directorio/logo`;
+  editarDirectorioForm: DirectorioForm = {
+    direccion: '',
+    nombre: '',
+    social: '',
+    telefono: '',
+    tipo_directorio: '',
+    padre: '',
+  };
+  ids: string = '';
+  urlImagen = `${environment.backendUrl}/directorio/imagen`;
+  urlLogo = `${environment.backendUrl}/directorio/logo`;
 
-  imgDefaultLogo:string='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg'
+  imgDefaultLogo: string =
+    'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
   uploadFileLogo?: File;
-  @ViewChild('fileInputLogo', {static: false}) fileInputLogo?: ElementRef;
+  @ViewChild('fileInputLogo', { static: false }) fileInputLogo?: ElementRef;
 
-  imgDefaultImagen:string='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg'
+  imgDefaultImagen: string =
+    'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
   uploadFileImagen?: File;
-  @ViewChild('fileInputImagen', {static: false}) fileInputImagen?: ElementRef;
+  @ViewChild('fileInputImagen', { static: false }) fileInputImagen?: ElementRef;
   p: number = 1;
   constructor(
-    private directorioService:DirectorioService,
-    private tipoDirectorioService:TipoDirectorioService,
-    private locationService:LocationService,
-    private router:Router,
-    private toastr:ToastrService,
+    private directorioService: DirectorioService,
+    private tipoDirectorioService: TipoDirectorioService,
+    private locationService: LocationService,
+    private router: Router,
+    private toastr: ToastrService,
     private sanitizer: DomSanitizer,
-    private wsService:WebsocketService
-  ){
-  }
+    private wsService: WebsocketService
+  ) {}
   ngOnInit(): void {
     this.mostrarDirectorio();
     this.mostrarTipoDirectorio();
   }
-  mostrarDirectorio(){
+  mostrarDirectorio() {
     this.directorioService.getDirectorio(this.estado).subscribe({
-      next:(data:ResultDirectorios)=>{
-        this.listDirectorio= data.directorio;
+      next: (data: ResultDirectorios) => {
+        this.listDirectorio = data.directorio;
+        console.log(this.listDirectorio);
       },
-      error:(error)=>{
+      error: (error) => {
         console.log(error);
-      }
-    })
+      },
+    });
   }
-  mostrarTipoDirectorio(){
+  mostrarTipoDirectorio() {
     this.tipoDirectorioService.getTipoDirectorio('1').subscribe({
-      next:(data:ResultTipoDirectorios)=>{
-        this.listTipoDirectorio= data.tipoDirectorio;
+      next: (data: ResultTipoDirectorios) => {
+        this.listTipoDirectorio = data.tipoDirectorio;
       },
-      error:(error)=>{
+      error: (error) => {
         console.log(error);
-      }
-    })
+      },
+    });
   }
-  agregarDirectorio(){
-    if (this.directorioForm.archivo==='' || this.directorioForm.logo==='' || this.directorioForm.nombre==='' || this.directorioForm.direccion==='' || this.directorioForm.tipo_directorio==='') {
-      this.toastr.warning('Complete los datos que son obligatorios','ALERTA');
+  agregarDirectorio() {
+    if (
+      this.directorioForm.archivo === '' ||
+      this.directorioForm.logo === '' ||
+      this.directorioForm.nombre === '' ||
+      this.directorioForm.direccion === '' ||
+      this.directorioForm.tipo_directorio === '' ||
+      this.directorioForm.padre===''
+    ) {
+      this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
       return;
-    }
-    else{
+    } else {
       const formData = new FormData();
-      formData.append('nombre',this.directorioForm.nombre);
-      formData.append('telefono',this.directorioForm.telefono!);
-      formData.append('direccion',this.directorioForm.direccion);
-      formData.append('social',this.directorioForm.social!);
-      formData.append('logo',this.uploadFileLogo!);
-      formData.append('archivo',this.uploadFileImagen!);
-      formData.append('tipo_directorio',this.directorioForm.tipo_directorio);
+      formData.append('nombre', this.directorioForm.nombre);
+      formData.append('telefono', this.directorioForm.telefono!);
+      formData.append('direccion', this.directorioForm.direccion);
+      formData.append('social', this.directorioForm.social!);
+      formData.append('logo', this.uploadFileLogo!);
+      formData.append('archivo', this.uploadFileImagen!);
+      formData.append('padre',this.directorioForm.padre);
+      formData.append('tipo_directorio', this.directorioForm.tipo_directorio);
       this.directorioService.postDirectorio(formData).subscribe({
-        next:(data)=>{
-          this.toastr.success(data.msg,'REGISTRADO');
+        next: (data) => {
+          this.toastr.success(data.msg, 'REGISTRADO');
           this.mostrarDirectorio();
           this.cancelar();
         },
-        error:error=>{
+        error: (error) => {
           console.log(error);
-
-        }
+        },
       });
-
-
     }
   }
-  editarDirectorio(){
-    const formData = new FormData();
-      formData.append('nombre',this.editarDirectorioForm.nombre);
-      formData.append('telefono',this.editarDirectorioForm.telefono!);
-      formData.append('direccion',this.editarDirectorioForm.direccion);
-      formData.append('social',this.editarDirectorioForm.social!);
-      formData.append('tipo_directorio',this.editarDirectorioForm.tipo_directorio);
-    this.directorioService.putDirectorio(formData,this.ids).subscribe({
-      next:(data)=>{
-        this.toastr.success(data.msg,'EDITADO');
-        this.mostrarDirectorio();
-      },
-      error:error=>{
-        console.log(error);
-      }
-    })
+  editarDirectorio() {
+    if (
+      this.editarDirectorioForm.nombre === '' ||
+      this.editarDirectorioForm.direccion === '' ||
+      this.editarDirectorioForm.tipo_directorio === '' ||
+      this.editarDirectorioForm.padre===''
+    ) {
+      this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
+    } else{
+      const formData = new FormData();
+      formData.append('nombre', this.editarDirectorioForm.nombre);
+      formData.append('telefono', this.editarDirectorioForm.telefono!);
+      formData.append('direccion', this.editarDirectorioForm.direccion);
+      formData.append('social', this.editarDirectorioForm.social!);
+      formData.append('padre',this.editarDirectorioForm.padre)
+      formData.append(
+        'tipo_directorio',
+        this.editarDirectorioForm.tipo_directorio
+      );
+      this.directorioService.putDirectorio(formData, this.ids).subscribe({
+        next: (data) => {
+          this.toastr.success(data.msg, 'EDITADO');
+          this.mostrarDirectorio();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    }
+
   }
-  eliminarDirectorio(estado:number,id:number){
+  eliminarDirectorio(estado: number, id: number) {
     Swal.fire({
       title: 'Estas seguro?',
-      text: (estado===0)?"Se dejara de publicar el directorio":"Se publicara el directorio",
+      text:
+        estado === 0
+          ? 'Se dejara de publicar el directorio'
+          : 'Se publicara el directorio',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, seguro!',
-      cancelButtonText:'No, cancelar'
+      cancelButtonText: 'No, cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.directorioService.deleteDirectorio(String(id),String(estado)).subscribe({
-          next:(data)=>{
-            Swal.fire(
-              (estado===0)?"Sin publicar":"Publicado",
-              data.msg,
-              'success'
-            );
-            this.wsService.emit('nueva-ubicacion');
-            this.mostrarDirectorio();
-          },
-          error:(error)=>{
-            console.log(error);
-
-          }
-        })
-
+        this.directorioService
+          .deleteDirectorio(String(id), String(estado))
+          .subscribe({
+            next: (data) => {
+              Swal.fire(
+                estado === 0 ? 'Sin publicar' : 'Publicado',
+                data.msg,
+                'success'
+              );
+              this.wsService.emit('nueva-ubicacion');
+              this.mostrarDirectorio();
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
       }
-    })
+    });
   }
-  actualizarLogo(){
+  actualizarLogo() {
     const formData = new FormData();
-    formData.append('logo',this.uploadFileLogo!);
-    this.directorioService.putLogoDirectorio(formData,this.ids).subscribe({
-      next:data=>{
-        this.toastr.success(data.msg,'LOGO EDITADO');
+    formData.append('logo', this.uploadFileLogo!);
+    this.directorioService.putLogoDirectorio(formData, this.ids).subscribe({
+      next: (data) => {
+        this.toastr.success(data.msg, 'LOGO EDITADO');
         this.mostrarDirectorio();
         this.cancelar();
       },
-      error:error=>{
+      error: (error) => {
         console.log(error);
-
-      }
-    })
+      },
+    });
   }
-  actualizarImagen(){
+  actualizarImagen() {
     const formData = new FormData();
-    formData.append('archivo',this.uploadFileImagen!);
-    this.directorioService.putImagenDirectorio(formData,this.ids).subscribe({
-      next:data=>{
-        this.toastr.success(data.msg,'IMAGEN EDITADO');
+    formData.append('archivo', this.uploadFileImagen!);
+    this.directorioService.putImagenDirectorio(formData, this.ids).subscribe({
+      next: (data) => {
+        this.toastr.success(data.msg, 'IMAGEN EDITADO');
         this.mostrarDirectorio();
         this.cancelar();
       },
-      error:error=>{
+      error: (error) => {
         console.log(error);
-      }
-    })
+      },
+    });
   }
-  obtenerDatos(id:number){
+  obtenerDatos(id: number) {
     this.directorioService.getDirectorioId(id).subscribe({
-      next:(data:ResultDirectorio)=>{
-        this.ids=String(id);
-        this.editarDirectorioForm={
-          tipo_directorio:String(data.directorio.tipo_directorio),
-          direccion:data.directorio.direccion,
-          nombre:data.directorio.nombre,
-          social:data.directorio.social,
-          telefono:data.directorio.telefono
-        }
-      },
-      error:error=>{
-        console.log(error);
+      next: (data: ResultDirectorio) => {
+        this.ids = String(id);
+        console.log(data);
 
-      }
-    })
+        this.editarDirectorioForm = {
+          tipo_directorio: String(data.directorio.tipo_directorio),
+          direccion: data.directorio.direccion,
+          nombre: data.directorio.nombre,
+          social: data.directorio.social,
+          telefono: data.directorio.telefono,
+          padre: data.directorio.padre,
+
+        };
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
-  localizacion(titulo:string,lat:number,lng:number, id:number){
-    this.router.navigateByUrl(`admin/directorio-localizacion/${titulo}/${id}/${lat}/${lng}`)
+  localizacion(titulo: string, lat: number, lng: number, id: number) {
+    this.router.navigateByUrl(
+      `admin/directorio-localizacion/${id}/${lat}/${lng}`
+    );
   }
-  showEvent(event:any){
+  showEvent(event: any) {
     console.log(event.target.value);
     this.estado = event.target.value;
     this.mostrarDirectorio();
   }
-  capturarFileLogo(event:any){
+  capturarFileLogo(event: any) {
     this.uploadFileLogo = event.target.files[0];
     console.log(this.uploadFileLogo);
     if (!this.uploadFileLogo) {
-      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO','SIN LOGO');
-      this.directorioForm.logo='';
-      this.fileInputLogo!.nativeElement.value = "";
-      this.imgDefaultLogo='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN LOGO');
+      this.directorioForm.logo = '';
+      this.fileInputLogo!.nativeElement.value = '';
+      this.imgDefaultLogo =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     }
     if (this.uploadFileLogo!.size > 1072383) {
-      this.toastr.warning('El tamaño maximo es de 1 MB','ARCHIVO EXCEDE LO ESTIMADO');
-      this.directorioForm.logo='';
-      this.fileInputLogo!.nativeElement.value = "";
-      this.imgDefaultLogo='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      this.toastr.warning(
+        'El tamaño maximo es de 1 MB',
+        'ARCHIVO EXCEDE LO ESTIMADO'
+      );
+      this.directorioForm.logo = '';
+      this.fileInputLogo!.nativeElement.value = '';
+      this.imgDefaultLogo =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
-    }
-    else{
-      this.extraserBase64(this.uploadFileLogo).then((imagen:any) => {
+    } else {
+      this.extraserBase64(this.uploadFileLogo).then((imagen: any) => {
         this.imgDefaultLogo = imagen.base;
-        this.directorioForm.logo='cargado';
+        this.directorioForm.logo = 'cargado';
       });
     }
   }
-  capturarFileImagen(event:any){
+  capturarFileImagen(event: any) {
     this.uploadFileImagen = event.target.files[0];
     console.log(this.uploadFileImagen);
     if (!this.uploadFileImagen) {
-      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO','SIN LOGO');
-      this.directorioForm.archivo='';
-      this.fileInputImagen!.nativeElement.value = "";
-      this.imgDefaultImagen='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN LOGO');
+      this.directorioForm.archivo = '';
+      this.fileInputImagen!.nativeElement.value = '';
+      this.imgDefaultImagen =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     }
     if (this.uploadFileImagen!.size > 1072383) {
-      this.toastr.warning('El tamaño maximo es de 1 MB','ARCHIVO EXCEDE LO ESTIMADO');
-      this.directorioForm.archivo='';
-      this.fileInputImagen!.nativeElement.value = "";
-      this.imgDefaultImagen='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+      this.toastr.warning(
+        'El tamaño maximo es de 1 MB',
+        'ARCHIVO EXCEDE LO ESTIMADO'
+      );
+      this.directorioForm.archivo = '';
+      this.fileInputImagen!.nativeElement.value = '';
+      this.imgDefaultImagen =
+        'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
-    }
-    else{
-      this.extraserBase64(this.uploadFileImagen).then((imagen:any) => {
+    } else {
+      this.extraserBase64(this.uploadFileImagen).then((imagen: any) => {
         this.imgDefaultImagen = imagen.base;
-        this.directorioForm.archivo='cargado';
+        this.directorioForm.archivo = 'cargado';
       });
     }
   }
-  extraserBase64 = async($event :any)=> new Promise((resolve, reject)=>{
-    try {
-      const unsafeImg = window.URL.createObjectURL($event);
-      const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
-      const reader = new FileReader();
-      reader.readAsDataURL($event);
-      reader.onload=()=>{
-        resolve({
-          base: reader.result
-        })
-      };
-      reader.onerror=error=>{
-        resolve({
-          base: null
-        })
+  extraserBase64 = async ($event: any) =>
+    new Promise((resolve, reject) => {
+      try {
+        const unsafeImg = window.URL.createObjectURL($event);
+        const image = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
+        const reader = new FileReader();
+        reader.readAsDataURL($event);
+        reader.onload = () => {
+          resolve({
+            base: reader.result,
+          });
+        };
+        reader.onerror = (error) => {
+          resolve({
+            base: null,
+          });
+        };
+      } catch (e) {
+        reject(e);
       }
-    } catch (e) {
-      reject(e)
-    }
-  });
-  reset(){
-    this.fileInputLogo!.nativeElement.value = "";
-    this.imgDefaultLogo='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
-    this.fileInputImagen!.nativeElement.value = "";
-    this.imgDefaultImagen='https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+    });
+  reset() {
+    this.fileInputLogo!.nativeElement.value = '';
+    this.imgDefaultLogo =
+      'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
+    this.fileInputImagen!.nativeElement.value = '';
+    this.imgDefaultImagen =
+      'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
   }
-  get isUserLocationReady(){
+  get isUserLocationReady() {
     return this.locationService.isUserLocationReady;
   }
 
-  cancelar(){
+  cancelar() {
     this.reset();
-    this.directorioForm={
-      archivo:'',
-      direccion:'',
-      logo:'',
-      nombre:'',
-      social:'',
-      telefono:'',
-      tipo_directorio:''
+    this.directorioForm = {
+      archivo: '',
+      direccion: '',
+      logo: '',
+      nombre: '',
+      social: '',
+      telefono: '',
+      tipo_directorio: '',
+      padre: '',
     };
-    this.editarDirectorioForm={
-      direccion:'',
-      nombre:'',
-      social:'',
-      telefono:'',
-      tipo_directorio:''
-    }
-    this.ids='';
+    this.editarDirectorioForm = {
+      direccion: '',
+      nombre: '',
+      social: '',
+      telefono: '',
+      tipo_directorio: '',
+      padre: '',
+    };
+    this.ids = '';
   }
 }

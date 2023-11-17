@@ -23,6 +23,7 @@
       <tr>
         <th>N°</th>
         <th>Nombre</th>
+        <th>Parroco - Hermanas Religiosas</th>
         <th>Direccion</th>
         <th>Telefono</th>
         <th>Logo</th>
@@ -39,6 +40,7 @@
       <tr *ngFor="let directorio of listDirectorio! | paginate: { itemsPerPage: 10, currentPage: p }">
         <td>{{directorio.ids}}</td>
         <td>{{directorio.nombre}}</td>
+        <td>{{directorio.padre}}</td>
         <td>{{directorio.direccion}}</td>
         <td>{{directorio.telefono}}</td>
         <td>
@@ -144,6 +146,11 @@
              [(ngModel)]="directorioForm.nombre" name="nombre">
           </div>
           <div class="form-group">
+            <label class="control-label">Parroco - Hermanas Religiosas<i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar el nombre del Parroco ó Hermana Religiosa"
+             [(ngModel)]="directorioForm.padre" name="padre">
+          </div>
+          <div class="form-group">
             <label class="control-label">Telefono</label>
             <input type="text" id="firstName" class="form-control" placeholder="agregar un telefono"
              [(ngModel)]="directorioForm.telefono" name="telefono" >
@@ -189,11 +196,15 @@ style="display: none;">
             <option *ngFor="let tipoDirectorio of listTipoDirectorio" value="{{tipoDirectorio.id}}" >{{tipoDirectorio.nombre}}</option>
           </select>
         </div>
-
         <div class="form-group">
           <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
           <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
            [(ngModel)]="editarDirectorioForm.nombre" name="nombre">
+        </div>
+        <div class="form-group">
+          <label class="control-label">Parroco - Hermanas Religiosas <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+          <input type="text" id="firstName" class="form-control" placeholder="agregar el nombre del Parroco ó Hermana Religiosa"
+           [(ngModel)]="editarDirectorioForm.padre" name="padre">
         </div>
         <div class="form-group">
           <label class="control-label">Telefono</label>

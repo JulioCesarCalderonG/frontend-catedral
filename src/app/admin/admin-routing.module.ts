@@ -38,7 +38,7 @@ const routes: Routes = [
       {path:'tipo-cancionero',component:TipoCancioneroComponent},
       {path:'noticias',component:NoticiasComponent},
       {path:'directorio',component:DirectorioComponent},
-      {path:'directorio-localizacion/:titulo/:id/:lat/:lng',component:DirectorioLocalozacionComponent},
+      {path:'directorio-localizacion/:id/:lat/:lng',component:DirectorioLocalozacionComponent},
       {path:'atencion',component:AtencionComponent},
       {path:'ministerio',component:MinisteriosComponent},
       {path:'tipo-ministerio',component:TipoMinisterioComponent},

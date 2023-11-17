@@ -24,6 +24,7 @@ export interface Directorio {
   social:    string;
   estado:    number;
   tipo_directorio:number;
+  padre:     string;
 }
 
 export interface DirectorioForm{
@@ -33,5 +34,6 @@ export interface DirectorioForm{
   logo?:string,
   archivo?:string,
   social?:string,
-  tipo_directorio:string
+  tipo_directorio:string,
+  padre:string
 }

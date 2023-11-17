@@ -36,7 +36,6 @@ export class DirectorioLocalozacionComponent implements OnInit{
   }
   ngOnInit(): void {
     this.id = this.rutaActiva.snapshot.params['id'];
-    this.titulo=this.rutaActiva.snapshot.params['titulo'];
     const lat = Number(this.rutaActiva.snapshot.params['lat']);
     const lng = Number(this.rutaActiva.snapshot.params['lng']);
     this.lngLat={lng,lat};
