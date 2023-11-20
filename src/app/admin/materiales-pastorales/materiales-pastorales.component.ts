@@ -21,13 +21,10 @@ export class MaterialesPastoralesComponent implements OnInit{
   ids: string = '';
   materialForm: MaterialForm = {
     nombre: '',
-    titulo: '',
     logo: '',
-    pdf: '',
   };
   editarMaterialForm:MaterialForm={
     nombre:'',
-    titulo:''
   }
   logoMaterialForm:LogoMaterialForm={
     logo:''
@@ -45,6 +42,7 @@ export class MaterialesPastoralesComponent implements OnInit{
   uploadFilePDF?: File;
   @ViewChild('fileInputPDF', { static: false }) fileInputPDF?: ElementRef;
   p: number = 1;
+  estado:string='1';
   constructor(
     private materialService: MaterialPastoralService,
     private router: Router,
@@ -59,10 +57,9 @@ export class MaterialesPastoralesComponent implements OnInit{
     this.mostrarMaterial();
   }
   mostrarMaterial() {
-    this.materialService.getMaterial().subscribe({
+    this.materialService.getMaterial(this.estado).subscribe({
       next: (data: ResultMaterialPastorales) => {
         this.listMaterial = data.material;
-        console.log(this.listMaterial);
       },
       error: (error) => {
         console.log(error);
@@ -72,18 +69,14 @@ export class MaterialesPastoralesComponent implements OnInit{
   agregarMaterial() {
     if (
       this.materialForm.nombre === '' ||
-      this.materialForm.titulo === '' ||
-      this.materialForm.logo === '' ||
-      this.materialForm.pdf === ''
+      this.materialForm.logo === ''
     ) {
       this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
       return;
     }
     const formData = new FormData();
     formData.append('nombre', this.materialForm.nombre);
-    formData.append('titulo', this.materialForm.titulo!);
     formData.append('logo', this.uploadFileLogo!);
-    formData.append('archivo', this.uploadFilePDF!);
     this.materialService.postMaterial(formData).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'REGISTRADO');
@@ -99,7 +92,6 @@ export class MaterialesPastoralesComponent implements OnInit{
   editarMaterial(){
     const formData = new FormData();
       formData.append('nombre',this.editarMaterialForm.nombre);
-      formData.append('titulo',this.editarMaterialForm.titulo!);
     this.materialService.putMaterial(formData,this.ids).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'EDITADO');
@@ -122,6 +114,7 @@ export class MaterialesPastoralesComponent implements OnInit{
         this.toastr.success(data.msg,'EDITADO');
         this.mostrarMaterial();
         this.cancelar();
+        this.reset();
       },
       error:(error)=>{
         console.log(error);
@@ -148,10 +141,12 @@ export class MaterialesPastoralesComponent implements OnInit{
       }
     })
   }
-  eliminarMaterial(id:number){
+  eliminarMaterial(id:number, estado:number){
     Swal.fire({
       title: 'Estas seguro?',
-      text: 'Se eliminara este ministerio!',
+      text:  estado === 0
+      ? 'Se inhabilitara el material pastoral'
+      : 'Se habilitara el material pastoral',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -160,7 +155,7 @@ export class MaterialesPastoralesComponent implements OnInit{
       cancelButtonText:'No, cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.materialService.deleteMaterial(id).subscribe({
+        this.materialService.deleteMaterial(id,estado).subscribe({
           next:(data)=>{
             Swal.fire(
               "Eliminado",
@@ -184,7 +179,6 @@ export class MaterialesPastoralesComponent implements OnInit{
         this.ids=String(id);
         this.editarMaterialForm={
           nombre:data.material.nombre,
-          titulo:data.material.titulo,
         }
       },
       error:error=>{
@@ -192,6 +186,11 @@ export class MaterialesPastoralesComponent implements OnInit{
 
       }
     })
+  }
+  showEvent(event: any) {
+    console.log(event.target.value);
+    this.estado = event.target.value;
+    this.mostrarMaterial();
   }
   capturarFileLogo(event: any) {
     this.uploadFileLogo = event.target.files[0];
@@ -221,7 +220,7 @@ export class MaterialesPastoralesComponent implements OnInit{
       });
     }
   }
-  capturarFileImagen(event: any) {
+/*   capturarFileImagen(event: any) {
     this.uploadFilePDF = event.target.files[0];
     console.log(this.uploadFilePDF);
     if (!this.uploadFilePDF) {
@@ -248,7 +247,7 @@ export class MaterialesPastoralesComponent implements OnInit{
         this.materialForm.pdf = 'cargado';
       });
     }
-  }
+  } */
   capturarFileLogo2(event: any) {
     this.uploadFileLogo = event.target.files[0];
     console.log(this.uploadFileLogo);
@@ -336,14 +335,11 @@ export class MaterialesPastoralesComponent implements OnInit{
   }
   cancelar() {
     this.materialForm = {
-      pdf: '',
       logo: '',
       nombre: '',
-      titulo: '',
     };
     this.editarMaterialForm={
-      nombre:'',
-      titulo:''
+      nombre:''
     }
     this.logoMaterialForm={
       logo:''

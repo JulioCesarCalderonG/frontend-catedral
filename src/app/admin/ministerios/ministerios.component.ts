@@ -50,6 +50,7 @@ export class MinisteriosComponent implements OnInit {
   uploadFilePDF?: File;
   @ViewChild('fileInputPDF', { static: false }) fileInputPDF?: ElementRef;
   p: number = 1;
+  estado:string='1';
   constructor(
     private ministerioService: MinisteriosService,
     private router: Router,
@@ -62,10 +63,9 @@ export class MinisteriosComponent implements OnInit {
     this.mostrarMinisterio();
   }
   mostrarMinisterio() {
-    this.ministerioService.getMinisterio().subscribe({
+    this.ministerioService.getMinisterio(this.estado).subscribe({
       next: (data: ResultMinisterios) => {
         this.listMinisterio = data.ministerio;
-        console.log(this.listMinisterio);
       },
       error: (error) => {
         console.log(error);
@@ -98,6 +98,11 @@ export class MinisteriosComponent implements OnInit {
         console.log(error);
       }
     })
+  }
+  showEvent(event: any) {
+    console.log(event.target.value);
+    this.estado = event.target.value;
+    this.mostrarMinisterio();
   }
   editarMinisterio(){
     const formData = new FormData();
@@ -151,10 +156,12 @@ export class MinisteriosComponent implements OnInit {
       }
     })
   }
-  eliminarMinisterio(id:number){
+  eliminarMinisterio(id:number, estado:number){
     Swal.fire({
       title: 'Estas seguro?',
-      text: 'Se eliminara este ministerio!',
+      text:  estado === 0
+      ? 'Se inhabilitara el ministerio'
+      : 'Se habilitara el ministerio',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -163,7 +170,7 @@ export class MinisteriosComponent implements OnInit {
       cancelButtonText:'No, cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.ministerioService.deleteMinisterio(id).subscribe({
+        this.ministerioService.deleteMinisterio(id,estado).subscribe({
           next:(data)=>{
             Swal.fire(
               "Eliminado",

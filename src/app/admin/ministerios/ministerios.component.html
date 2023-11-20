@@ -1,5 +1,13 @@
 <div class="row mb-5 justify-content-end">
   <div class="col-md-4">
+    <div class="form-group">
+      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
     <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
       data-target=".bs-example-modal-lg">
       Agregar
@@ -66,9 +74,14 @@
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
-        <td>
-          <button class="btn btn-danger" (click)="eliminarMinisterio(ministerio.id)">
-            <i class="fa fa-solid fa-trash"></i>
+        <td *ngIf="ministerio.estado===1">
+          <button class="btn btn-danger" (click)="eliminarMinisterio(ministerio.id, 0)">
+            <i class="fa fa-solid fa-lock"></i>
+          </button>
+        </td>
+        <td *ngIf="ministerio.estado===0">
+          <button class="btn btn-danger" (click)="eliminarMinisterio(ministerio.id, 1)">
+            <i class="fa fa-solid fa-lock-open"></i>
           </button>
         </td>
       </tr>

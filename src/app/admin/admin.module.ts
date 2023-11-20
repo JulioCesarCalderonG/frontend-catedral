@@ -26,6 +26,7 @@ import { AtencionComponent } from './atencion/atencion.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { TipoMinisterioComponent } from './tipo-ministerio/tipo-ministerio.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TipoMaterialComponent } from './tipo-material/tipo-material.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -46,7 +47,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     TiempoLiturgiaComponent,
     TipoIniciacionComponent,
     AtencionComponent,
-    TipoMinisterioComponent
+    TipoMinisterioComponent,
+    TipoMaterialComponent
   ],
   imports: [
     CommonModule,

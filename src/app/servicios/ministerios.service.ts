@@ -13,8 +13,8 @@ export class MinisteriosService {
     private http: HttpClient,
     private router: Router) { }
 
-  getMinisterio(): Observable<any> {
-    return this.http.get(this.url);
+  getMinisterio(estado:string='1'): Observable<any> {
+    return this.http.get(this.url,{params:{estado}});
   }
   getMinisterioId(id: number): Observable<any> {
     return this.http.get(`${this.url}/${id}`);
@@ -31,7 +31,7 @@ export class MinisteriosService {
   putPDFMinisterio(body: FormData, id: string): Observable<any> {
     return this.http.put(`${this.url}/pdf/${id}`, body)
   }
-  deleteMinisterio(id: number): Observable<any> {
-    return this.http.delete(`${this.url}/${id}`);
+  deleteMinisterio(id: number,estado:number): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`,{params:{estado}});
   }
 }

@@ -18,6 +18,7 @@ export interface Ministerio {
   titulo: string;
   logo:   string;
   pdf:    string;
+  estado:number;
 }
 
 export interface MinisterioForm{

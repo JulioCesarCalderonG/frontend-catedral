@@ -13,16 +13,13 @@ export interface ResultMaterialPastoral {
 export interface Material {
   id:     number;
   nombre: string;
-  titulo: string;
   logo:   string;
-  pdf:    string;
+  estado: number;
 }
 
 export interface MaterialForm{
   nombre:string,
-  titulo:string,
   logo?:string,
-  pdf?:string
 }
 
 export interface LogoMaterialForm{

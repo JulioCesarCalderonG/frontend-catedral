@@ -13,8 +13,8 @@ export class MaterialPastoralService {
     private http: HttpClient,
     private router: Router) { }
 
-  getMaterial(): Observable<any> {
-    return this.http.get(this.url);
+  getMaterial(estado:string): Observable<any> {
+    return this.http.get(this.url,{params:{estado}});
   }
   getMaterialId(id: number): Observable<any> {
     return this.http.get(`${this.url}/${id}`);
@@ -31,8 +31,8 @@ export class MaterialPastoralService {
   putPDFMaterial(body: FormData, id: string): Observable<any> {
     return this.http.put(`${this.url}/pdf/${id}`, body)
   }
-  deleteMaterial(id: number): Observable<any> {
-    return this.http.delete(`${this.url}/${id}`);
+  deleteMaterial(id: number,estado:number): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`,{params:{estado}});
   }
 
 }

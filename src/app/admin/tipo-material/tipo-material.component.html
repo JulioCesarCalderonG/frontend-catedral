@@ -1,13 +1,5 @@
 <div class="row mb-5 justify-content-end">
   <div class="col-md-4">
-    <div class="form-group">
-      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" (change)="showEvent($event)">
-          <option value="1">Activo</option>
-          <option value="0">Inactivo</option>
-      </select>
-    </div>
-  </div>
-  <div class="col-md-4">
     <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
       data-target=".bs-example-modal-lg">
       Agregar
@@ -16,52 +8,52 @@
   </div>
 </div>
 
-<!-- Tabla de Ministerio -->
+<!-- Tabla de Tipo Material -->
 <div class="table-responsive">
   <table class="table">
     <thead>
       <tr>
         <th>N°</th>
-        <th>Nombre</th>
-        <th>Ver Logo</th>
-        <th>Editar Logo</th>
+        <th>Titulo</th>
+        <th>Material Pastoral</th>
+        <th>Ver PDF</th>
+        <th>Editar PDF</th>
         <th>Editar</th>
         <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let material of listMaterial! | paginate: { itemsPerPage: 10, currentPage: p }">
-        <td>{{material.id}}</td>
-        <td>{{material.nombre}}</td>
+      <tr *ngFor="let tipoMaterial of listTipoMaterial! | paginate: { itemsPerPage: 10, currentPage: p }">
+        <td>{{tipoMaterial.id}}</td>
+        <td>{{tipoMaterial.titulo}}</td>
+        <td>{{tipoMaterial.MaterialPastoral.nombre}}</td>
         <td>
-          <div>
-            <img src="{{urlLogo}}/{{material.logo}}" class="rounded" alt="...">
-          </div>
+          <a class="btn btn-secondary"
+            href="{{urlPDF}}/{{tipoMaterial.pdf}}"
+            target="_blank"
+            >
+            <i class="fa fa-solid fa-eye"></i>
+          </a>
         </td>
         <td>
           <button class="btn btn-primary"
-          data-toggle="modal" data-target=".modalLogo"
-          (click)="obtenerDatos(material.id)"
+          data-toggle="modal" data-target=".modalPDF"
+          (click)="obtenerDatos(tipoMaterial.id)"
           >
-            <i class="fa fa-solid fa-images"></i>
+            <i class="fa fa-solid fa-file-pdf"></i>
           </button>
         </td>
         <td>
           <button class="btn btn-warning"
           data-toggle="modal" data-target=".modalEditar"
-          (click)="obtenerDatos(material.id)"
+          (click)="obtenerDatos(tipoMaterial.id)"
           >
             <i class="fa fa-solid fa-pencil"></i>
           </button>
         </td>
-        <td *ngIf="material.estado===1">
-          <button class="btn btn-danger" (click)="eliminarMaterial(material.id, 0)">
-            <i class="fa fa-solid fa-lock"></i>
-          </button>
-        </td>
-        <td *ngIf="material.estado===0">
-          <button class="btn btn-danger" (click)="eliminarMaterial(material.id, 1)">
-            <i class="fa fa-solid fa-lock-open"></i>
+        <td>
+          <button class="btn btn-danger" (click)="eliminarMaterial(tipoMaterial.id)">
+            <i class="fa fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>
@@ -70,29 +62,24 @@
   <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
   nextLabel="Siguiente"></pagination-controls>
 </div>
-
-<!-- AGREGAR MATERIAL -->
+<!-- AGREGAR TIPO MATERIALES -->
 <div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
   style="display: none;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myLargeModalLabel">Agregar Material Pastoral</h4>
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar Tipo de Material Pastoral</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
       </div>
-      <form #form="ngForm" (ngSubmit)="agregarMaterial()">
+      <form #form="ngForm" (ngSubmit)="agregarTipoMaterial()">
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-12">
-              <div class="form-group text-center">
-                <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
-            </div>
             <div class="form-group">
-              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
-              <input type="file" #fileInputLogo
+              <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputPDF
                 class="form-control"
-                (change)="capturarFileLogo($event)"
-
+                (change)="capturarFileImagen($event)"
               >
             </div>
             </div>
@@ -100,7 +87,14 @@
           <div class="form-group">
             <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
             <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
-             [(ngModel)]="materialForm.nombre" name="nombre">
+             [(ngModel)]="tipoMaterialForm.titulo" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Material Pastoral <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="tipoMaterialForm.id_material" name="id_material">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let material of listMaterial" value="{{material.id}}" >{{material.nombre}}</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">
@@ -115,27 +109,35 @@
   <!-- /.modal-dialog -->
 </div>
 
-<!-- EDITAR MATERIAL -->
+<!-- EDITAR TIPO MATERIALES -->
 <div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
   style="display: none;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myLargeModalLabel">Editar Material Pastoral</h4>
+        <h4 class="modal-title" id="myLargeModalLabel">Editar Tipo de Material Pastoral</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
       </div>
-      <form #form="ngForm" (ngSubmit)="editarMaterial()">
+      <form #form="ngForm" (ngSubmit)="editarTipoMaterial()">
         <div class="modal-body">
+
           <div class="form-group">
             <label class="control-label">Nombre <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
             <input type="text" id="firstName" class="form-control" placeholder="agregar un nombre"
-             [(ngModel)]="editarMaterialForm.nombre" name="nombre">
+             [(ngModel)]="editarTipoMaterialForm.titulo" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Material Pastoral <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <select class="form-control custom-select" [(ngModel)]="editarTipoMaterialForm.id_material" name="id_material">
+              <option value="">Seleccionar una opcion</option>
+              <option *ngFor="let material of listMaterial" value="{{material.id}}" >{{material.nombre}}</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
             (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
         </div>
       </form>
     </div>
@@ -144,43 +146,6 @@
   <!-- /.modal-dialog -->
 </div>
 
-<!-- EDITAR LOGO -->
-<div class="modal fade modalLogo show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-  style="display: none;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myLargeModalLabel">Editar Logo</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
-      </div>
-      <form #form="ngForm" (ngSubmit)="editarLogoMaterial()">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="form-group text-center">
-                <img src="{{imgDefaultLogo}}" class="img-thumbnail imgdefault" alt="...">
-            </div>
-            <div class="form-group">
-              <label class="control-label">Seleccionar Logo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
-              <input type="file" #fileInputLogo
-                class="form-control"
-                (change)="capturarFileLogo2($event)"
-              >
-            </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
-            (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
-        </div>
-      </form>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
 
 <!-- EDITAR PDF -->
 <div class="modal fade modalPDF show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -191,7 +156,7 @@
         <h4 class="modal-title" id="myLargeModalLabel">Editar PDF</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
       </div>
-      <form #form="ngForm" (ngSubmit)="editarPDFMaterial()">
+      <form #form="ngForm" (ngSubmit)="editarPDFTipoMaterial()">
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-12">

@@ -66,6 +66,7 @@ export class SidebarService {
       icono: 'fa fa-solid fa-recycle',
       submenu: [
         { titulo: 'Mostrar Materiales', url: 'materiales-pastorales' },
+        { titulo: 'Mostrar Tipo Materiales', url: 'tipo-materiales-pastorales' },
       ]
     },
   ];
