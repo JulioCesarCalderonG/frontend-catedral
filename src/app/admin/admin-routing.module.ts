@@ -20,6 +20,7 @@ import { TipoCancioneroComponent } from './tipo-cancionero/tipo-cancionero.compo
 import { AtencionComponent } from './atencion/atencion.component';
 import { TipoMinisterioComponent } from './tipo-ministerio/tipo-ministerio.component';
 import { TipoMaterialComponent } from './tipo-material/tipo-material.component';
+import { PlanPastoralComponent } from './plan-pastoral/plan-pastoral.component';
 
 const routes: Routes = [
   {
@@ -44,7 +45,8 @@ const routes: Routes = [
       {path:'ministerio',component:MinisteriosComponent},
       {path:'tipo-ministerio',component:TipoMinisterioComponent},
       {path:'materiales-pastorales',component:MaterialesPastoralesComponent},
-      {path:'tipo-materiales-pastorales',component:TipoMaterialComponent}
+      {path:'tipo-materiales-pastorales',component:TipoMaterialComponent},
+      {path:'plan-pastoral',component:PlanPastoralComponent}
     ]
   }
 ];

@@ -1,0 +1,177 @@
+<div class="row mb-5 justify-content-end">
+  <div class="col-md-4">
+    <button class="btn btn-block btn-success" style="font-weight: bold;" data-toggle="modal"
+      data-target=".bs-example-modal-lg">
+      Agregar
+      <i class="fa fa-solid fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Tabla de Tipo Material -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Titulo</th>
+        <th>Posicion</th>
+        <th>Ver PDF</th>
+        <th>Editar PDF</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let planPastoral of listPlanPastoral! | paginate: { itemsPerPage: 10, currentPage: p }">
+        <td>{{planPastoral.id}}</td>
+        <td>{{planPastoral.titulo}}</td>
+        <td>{{planPastoral.posicion}}</td>
+        <td>
+          <a class="btn btn-secondary"
+            href="{{urlPDF}}/{{planPastoral.pdf}}"
+            target="_blank"
+            >
+            <i class="fa fa-solid fa-eye"></i>
+          </a>
+        </td>
+        <td>
+          <button class="btn btn-primary"
+          data-toggle="modal" data-target=".modalPDF"
+          (click)="obtenerDatos(planPastoral.id)"
+          >
+            <i class="fa fa-solid fa-file-pdf"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-warning"
+          data-toggle="modal" data-target=".modalEditar"
+          (click)="obtenerDatos(planPastoral.id)"
+          >
+            <i class="fa fa-solid fa-pencil"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminarPlanPastoral(planPastoral.id)">
+            <i class="fa fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="p = $event" previousLabel="Atras"
+  nextLabel="Siguiente"></pagination-controls>
+</div>
+
+<!-- AGREGAR TIPO MATERIALES -->
+<div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Agregar el Plan Pastoral</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="agregarPlanPastoral()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputPDF
+                class="form-control"
+                (change)="capturarFileImagen($event)"
+              >
+            </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Titulo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un titulo"
+             [(ngModel)]="planPastoralForm.titulo" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Posicion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="number" id="firstName" class="form-control" placeholder="agregar una posicion"
+             [(ngModel)]="planPastoralForm.posicion" name="posicion">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Agregar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- EDITAR TIPO MATERIALES -->
+<div class="modal fade modalEditar show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar el Plan Pastoral</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarPlanPastoral()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Titulo <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="text" id="firstName" class="form-control" placeholder="agregar un titulo"
+             [(ngModel)]="editarPlanPastoralForm.titulo" name="titulo">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Posicion <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+            <input type="number" id="firstName" class="form-control" placeholder="agregar una posicion"
+             [(ngModel)]="editarPlanPastoralForm.posicion" name="posicion">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- EDITAR PDF -->
+<div class="modal fade modalPDF show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar PDF</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancelar()">×</button>
+      </div>
+      <form #form="ngForm" (ngSubmit)="editarPDFPlanPastoral()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+            <div class="form-group">
+              <label class="control-label">Seleccionar PDF <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+              <input type="file" #fileInputPDF
+                class="form-control"
+                (change)="capturarFileImagen2($event)"
+              >
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"
+            (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-info waves-effect text-left">Editar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

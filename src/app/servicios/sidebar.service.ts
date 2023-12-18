@@ -69,6 +69,13 @@ export class SidebarService {
         { titulo: 'Mostrar Tipo Materiales', url: 'tipo-materiales-pastorales' },
       ]
     },
+    {
+      titulo: 'Plan Pastoral',
+      icono: 'fa fa-solid fa-recycle',
+      submenu: [
+        { titulo: 'Mostrar Plan Pastoral', url: 'plan-pastoral' },
+      ]
+    },
   ];
   constructor() { }
 }
