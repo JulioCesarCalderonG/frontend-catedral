@@ -2,43 +2,43 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { PdfPlanPastoralForm, PlanPastoralForm, Planpastoral, ResultPlanPastoralID, ResultPlanPastorales } from 'src/app/interface/planPastoral.interface';
-import { PlanPastoralService } from 'src/app/servicios/plan-pastoral.service';
+import { Calendario, CalendarioForm, ImgCalendarioForm, ResultCalendarioID, ResultCalendarios } from 'src/app/interface/calendario.interface';
+import { CalendarioService } from 'src/app/servicios/calendario.service';
 import { WebsocketService } from 'src/app/socket/websocket.service';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-plan-pastoral',
-  templateUrl: './plan-pastoral.component.html',
-  styleUrls: ['./plan-pastoral.component.css']
+  selector: 'app-calendario',
+  templateUrl: './calendario.component.html',
+  styleUrls: ['./calendario.component.css']
 })
-export class PlanPastoralComponent implements OnInit {
-
-  listPlanPastoral?: Planpastoral[];
-  urlPDF = `${environment.backendUrl}/planpastoral/pdf`;
-  planPastoralForm: PlanPastoralForm = {
+export class CalendarioComponent implements OnInit{
+  listCalendario?: Calendario[];
+  urlPDF = `${environment.backendUrl}/calendario/img`;
+  calendarioForm: CalendarioForm = {
     titulo: '',
-    pdf: '',
-    posicion: ''
+    descripcion: '',
+    fecha: '',
+    imagen:''
   }
-  editarPlanPastoralForm: PlanPastoralForm = {
+  editarCalendarioForm: CalendarioForm = {
     titulo: '',
-    posicion: ''
+    descripcion: '',
+    fecha: '',
   }
-  pdfPlanPastoralForm: PdfPlanPastoralForm = {
-    pdf: ''
+  imgCalendarioForm: ImgCalendarioForm = {
+    imagen: ''
   }
-  imgDefaultPDF: string =
+  imgDefaultImagen: string =
     'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
-  uploadFilePDF?: File;
+  uploadFileImg?: File;
   @ViewChild('fileInputPDF', { static: false }) fileInputPDF?: ElementRef;
   p: number = 1;
   estado: string = '1';
   ids: string = '';
-
   constructor(
-    private planPastoralService: PlanPastoralService,
+    private calendarioService:CalendarioService,
     private router: Router,
     private toastr: ToastrService,
     private sanitizer: DomSanitizer,
@@ -48,59 +48,66 @@ export class PlanPastoralComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mostrarPlanPastoral();
+    this.mostrarCalendario()
   }
-  mostrarPlanPastoral() {
-    this.planPastoralService.getPlanPastoral().subscribe({
-      next: (data: ResultPlanPastorales) => {
-        this.listPlanPastoral = data.planpastoral;
+  mostrarCalendario() {
+    this.calendarioService.getCalendario().subscribe({
+      next: (data: ResultCalendarios) => {
+        this.listCalendario = data.calendario;
       },
       error: (error) => {
         console.log(error);
       },
     });
   }
-  agregarPlanPastoral() {
+  agregarCalendario() {
     if (
-      this.planPastoralForm.titulo === '' ||
-      this.planPastoralForm.pdf === '' ||
-      this.planPastoralForm.posicion === ''
+      this.calendarioForm.titulo === '' ||
+      this.calendarioForm.descripcion === '' ||
+      this.calendarioForm.fecha === '' ||
+      this.calendarioForm.imagen === ''
     ) {
       this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
       return;
     }
     const formData = new FormData();
-    formData.append('titulo', this.planPastoralForm.titulo!);
-    formData.append('posicion', this.planPastoralForm.posicion!);
-    formData.append('archivo', this.uploadFilePDF!);
-    this.planPastoralService.postPlanPastoral(formData).subscribe({
+    formData.append('titulo', this.calendarioForm.titulo!);
+    formData.append('descripcion', this.calendarioForm.descripcion!);
+    formData.append('fecha', this.calendarioForm.fecha!);
+    formData.append('logo', this.uploadFileImg!);
+    this.calendarioService.postCalendario(formData).subscribe({
       next: (data) => {
         this.toastr.success(data.msg, 'REGISTRADO');
-        this.mostrarPlanPastoral();
+        this.mostrarCalendario();
         this.cancelar();
       },
       error: error => {
-        console.log(error);
+        console.log(error.error.msg);
+        this.toastr.warning(
+          error.error.msg,
+          'ALERTA'
+        );
       }
     })
   }
-  editarPlanPastoral() {
+  editarCalendario() {
     if (
-      this.editarPlanPastoralForm.titulo === '' ||
-      this.editarPlanPastoralForm.posicion === ''
+      this.editarCalendarioForm.titulo === '' ||
+      this.editarCalendarioForm.descripcion === '' ||
+      this.editarCalendarioForm.fecha === ''
     ) {
       this.toastr.warning('Complete los datos que son obligatorios', 'ALERTA');
       return;
     }
     const formData = new FormData();
-    formData.append('titulo', this.editarPlanPastoralForm.titulo!);
-    formData.append('posicion', this.editarPlanPastoralForm.posicion!);
-
-    this.planPastoralService.putPlanPastoral(formData, this.ids).subscribe({
+    formData.append('titulo', this.editarCalendarioForm.titulo!);
+    formData.append('descripcion', this.editarCalendarioForm.descripcion!);
+    formData.append('fecha', this.editarCalendarioForm.fecha!);
+    this.calendarioService.putCalendario(formData, this.ids).subscribe({
       next: (data) => {
 
         this.toastr.success(data.msg, 'EDITADO');
-        this.mostrarPlanPastoral();
+        this.mostrarCalendario();
         this.reset();
       },
       error: error => {
@@ -108,18 +115,18 @@ export class PlanPastoralComponent implements OnInit {
       }
     })
   }
-  editarPDFPlanPastoral(){
-    if (this.pdfPlanPastoralForm.pdf==='') {
+  editarLogoCalendario(){
+    if (this.imgCalendarioForm.imagen==='') {
       this.toastr.warning('INGRESE TODOS LOS DATOS SOLICITADOS','ERROR DE DATOS');
       return;
     }
     const formData = new FormData();
-    formData.append('archivo',this.uploadFilePDF!);
-    this.planPastoralService.putPDFPlanPastoral(formData,this.ids).subscribe({
+    formData.append('logo',this.uploadFileImg!);
+    this.calendarioService.putImagenCalendario(formData,this.ids).subscribe({
       next:(data)=>{
         this.toastr.success(data.msg,'EDITADO');
-        this.mostrarPlanPastoral();
-        this.cancelar();
+        this.mostrarCalendario();
+        this.reset();
       },
       error:(error)=>{
         console.log(error);
@@ -127,7 +134,7 @@ export class PlanPastoralComponent implements OnInit {
       }
     })
   }
-  eliminarPlanPastoral(id:number){
+  eliminarCalendario(id:number){
     Swal.fire({
       title: 'Estas seguro?',
       text: 'Se eliminara el tipo de material!',
@@ -139,14 +146,14 @@ export class PlanPastoralComponent implements OnInit {
       cancelButtonText:'No, cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.planPastoralService.deletePlanPastoral(id).subscribe({
+        this.calendarioService.deleteCalendario(id).subscribe({
           next:(data)=>{
             Swal.fire(
               "Eliminado",
               data.msg,
               'success'
             );
-            this.mostrarPlanPastoral();
+            this.mostrarCalendario();
           },
           error:(error)=>{
             console.log(error);
@@ -157,57 +164,73 @@ export class PlanPastoralComponent implements OnInit {
       }
     })
   }
+  obtenerDatos(id:number){
+    this.calendarioService.getCalendarioId(id).subscribe({
+      next:(data:ResultCalendarioID)=>{
+        this.ids=String(id);
+        this.editarCalendarioForm={
+          titulo:data.calendario.titulo,
+          descripcion:data.calendario.descripcion,
+          fecha:data.calendario.fecha
+        }
+      },
+      error:error=>{
+       console.log(error);
+
+      }
+    })
+  }
   capturarFileImagen(event: any) {
-    this.uploadFilePDF = event.target.files[0];
-    if (!this.uploadFilePDF) {
+    this.uploadFileImg = event.target.files[0];
+    if (!this.uploadFileImg) {
       this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN PDF');
-      this.planPastoralForm.pdf = '';
+      this.calendarioForm.imagen = '';
       this.fileInputPDF!.nativeElement.value = '';
-      this.imgDefaultPDF =
+      this.imgDefaultImagen =
         'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     }
-    if (this.uploadFilePDF!.size > 3072383) {
+    if (this.uploadFileImg!.size > 3072383) {
       this.toastr.warning(
         'El tamaño maximo es de 1 MB',
         'ARCHIVO EXCEDE LO ESTIMADO'
       );
-      this.planPastoralForm.pdf = '';
+      this.calendarioForm.imagen = '';
       this.fileInputPDF!.nativeElement.value = '';
-      this.imgDefaultPDF =
+      this.imgDefaultImagen =
         'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     } else {
-      this.extraserBase64(this.uploadFilePDF).then((imagen: any) => {
-        this.imgDefaultPDF = imagen.base;
-        this.planPastoralForm.pdf = 'cargado';
+      this.extraserBase64(this.uploadFileImg).then((imagen: any) => {
+        this.imgDefaultImagen = imagen.base;
+        this.calendarioForm.imagen = 'cargado';
       });
     }
   }
   capturarFileImagen2(event: any) {
-    this.uploadFilePDF = event.target.files[0];
-    if (!this.uploadFilePDF) {
+    this.uploadFileImg = event.target.files[0];
+    if (!this.uploadFileImg) {
       this.toastr.warning('NO SE SELECCIONO NINGUN ARCHIVO', 'SIN PDF');
-      this.pdfPlanPastoralForm.pdf = '';
+      this.imgCalendarioForm.imagen = '';
       this.fileInputPDF!.nativeElement.value = '';
-      this.imgDefaultPDF =
+      this.imgDefaultImagen =
         'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     }
-    if (this.uploadFilePDF!.size > 1072383) {
+    if (this.uploadFileImg!.size > 1072383) {
       this.toastr.warning(
         'El tamaño maximo es de 1 MB',
         'ARCHIVO EXCEDE LO ESTIMADO'
       );
-      this.pdfPlanPastoralForm.pdf = '';
+      this.imgCalendarioForm.imagen = '';
       this.fileInputPDF!.nativeElement.value = '';
-      this.imgDefaultPDF =
+      this.imgDefaultImagen =
         'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     } else {
-      this.extraserBase64(this.uploadFilePDF).then((imagen: any) => {
-        this.imgDefaultPDF = imagen.base;
-        this.pdfPlanPastoralForm.pdf = 'cargado';
+      this.extraserBase64(this.uploadFileImg).then((imagen: any) => {
+        this.imgDefaultImagen = imagen.base;
+        this.imgCalendarioForm.imagen = 'cargado';
       });
     }
   }
@@ -232,37 +255,25 @@ export class PlanPastoralComponent implements OnInit {
       reject(e);
     }
   });
-  obtenerDatos(id:number){
-    this.planPastoralService.getPlanPastoralId(id).subscribe({
-      next:(data:ResultPlanPastoralID)=>{
-        this.ids=String(id);
-        this.editarPlanPastoralForm={
-          titulo:data.planpastoral.titulo,
-          posicion:String(data.planpastoral.posicion)
-        }
-      },
-      error:error=>{
-        console.log(error);
-      }
-    })
-  }
   reset() {
-    this.fileInputPDF!.nativeElement.value = '';
-    this.imgDefaultPDF =
+    this.fileInputPDF!.nativeElement.value = "";
+    this.imgDefaultImagen =
       'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
   }
-  cancelar() {
-    this.planPastoralForm = {
-      pdf: '',
-      titulo: '',
-      posicion: ''
-    };
-    this.editarPlanPastoralForm = {
-      titulo: '',
-      posicion: ''
+  cancelar(){
+    this.calendarioForm={
+      descripcion:'',
+      fecha:'',
+      titulo:'',
+      imagen:''
     }
-    this.pdfPlanPastoralForm = {
-      pdf: ''
+    this.editarCalendarioForm={
+      descripcion:'',
+      fecha:'',
+      titulo:''
+    }
+    this.imgCalendarioForm={
+      imagen:''
     }
     this.ids = '';
     this.reset();

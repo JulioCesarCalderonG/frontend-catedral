@@ -28,6 +28,7 @@ import { TipoMinisterioComponent } from './tipo-ministerio/tipo-ministerio.compo
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TipoMaterialComponent } from './tipo-material/tipo-material.component';
 import { PlanPastoralComponent } from './plan-pastoral/plan-pastoral.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -50,7 +51,8 @@ import { PlanPastoralComponent } from './plan-pastoral/plan-pastoral.component';
     AtencionComponent,
     TipoMinisterioComponent,
     TipoMaterialComponent,
-    PlanPastoralComponent
+    PlanPastoralComponent,
+    CalendarioComponent
   ],
   imports: [
     CommonModule,

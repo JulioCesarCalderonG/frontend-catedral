@@ -76,6 +76,13 @@ export class SidebarService {
         { titulo: 'Mostrar Plan Pastoral', url: 'plan-pastoral' },
       ]
     },
+    {
+      titulo: 'Calendario',
+      icono: 'fa fa-solid fa-recycle',
+      submenu: [
+        { titulo: 'Mostrar Calendario VAP', url: 'calendario' },
+      ]
+    },
   ];
   constructor() { }
 }
