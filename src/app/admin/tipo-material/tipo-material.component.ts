@@ -197,7 +197,7 @@ export class TipoMaterialComponent implements OnInit{
         'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     }
-    if (this.uploadFilePDF!.size > 3072383) {
+    if (this.uploadFilePDF!.size > 10072383) {
       this.toastr.warning(
         'El tamaño maximo es de 1 MB',
         'ARCHIVO EXCEDE LO ESTIMADO'
@@ -225,7 +225,7 @@ export class TipoMaterialComponent implements OnInit{
         'https://res.cloudinary.com/dkxwh94qt/image/upload/v1691765391/no-image_zyxdfe.jpg';
       return;
     }
-    if (this.uploadFilePDF!.size > 1072383) {
+    if (this.uploadFilePDF!.size > 10072383) {
       this.toastr.warning(
         'El tamaño maximo es de 1 MB',
         'ARCHIVO EXCEDE LO ESTIMADO'
