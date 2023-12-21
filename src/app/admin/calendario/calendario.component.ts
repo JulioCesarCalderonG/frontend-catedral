@@ -80,6 +80,7 @@ export class CalendarioComponent implements OnInit{
         this.toastr.success(data.msg, 'REGISTRADO');
         this.mostrarCalendario();
         this.cancelar();
+        this.wsService.emit('nueva-calendario');
       },
       error: error => {
         console.log(error.error.msg);
@@ -154,6 +155,7 @@ export class CalendarioComponent implements OnInit{
               'success'
             );
             this.mostrarCalendario();
+            this.wsService.emit('nueva-calendario');
           },
           error:(error)=>{
             console.log(error);

@@ -11,7 +11,6 @@
   <table class="table">
     <thead>
       <tr>
-        <th>N°</th>
         <th>Titulo</th>
         <th>Descripcion</th>
         <th>Fecha</th>
@@ -23,7 +22,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let calendario of listCalendario! | paginate: { itemsPerPage: 10, currentPage: p }">
-        <td>{{calendario.id}}</td>
         <td>{{calendario.titulo}}</td>
         <td>{{calendario.descripcion}}</td>
         <td>{{calendario.fecha}}</td>
