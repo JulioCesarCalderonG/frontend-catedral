@@ -14,8 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CKEditorModule } from 'ng2-ckeditor';
-import { environment } from '../environments/environment';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [
