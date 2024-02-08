@@ -22,6 +22,7 @@ import { TipoMinisterioComponent } from './tipo-ministerio/tipo-ministerio.compo
 import { TipoMaterialComponent } from './tipo-material/tipo-material.component';
 import { PlanPastoralComponent } from './plan-pastoral/plan-pastoral.component';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { adminGuard } from '../guard/admin.guard';
 
 const routes: Routes = [
   {
@@ -49,7 +50,8 @@ const routes: Routes = [
       {path:'tipo-materiales-pastorales',component:TipoMaterialComponent},
       {path:'plan-pastoral',component:PlanPastoralComponent},
       {path:'calendario',component:CalendarioComponent}
-    ]
+    ],
+    canActivateChild: [adminGuard],
   }
 ];
 

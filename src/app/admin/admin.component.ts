@@ -11,5 +11,12 @@ export class AdminComponent implements OnInit{
   constructor(private toastr: ToastrService) {}
 
   ngOnInit(): void {
+    this.cargar();
+  }
+  cargar(){
+    if (sessionStorage.getItem('carga')==='0') {
+      location.reload();
+      sessionStorage.setItem('carga','1');
+    }
   }
 }

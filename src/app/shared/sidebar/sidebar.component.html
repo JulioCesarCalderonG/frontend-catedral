@@ -10,11 +10,8 @@
                       <li class="user-profile">
                           <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><img src="../assets/images/users/profile.png" alt="user" /><span class="hide-menu">Steave Jobs </span></a>
                           <ul aria-expanded="false" class="collapse">
-                              <li><a href="javascript:void()">My Profile </a></li>
-                              <li><a href="javascript:void()">My Balance</a></li>
-                              <li><a href="javascript:void()">Inbox</a></li>
-                              <li><a href="javascript:void()">Account Setting</a></li>
-                              <li><a href="javascript:void()">Logout</a></li>
+                            <li><a href="javascript:void()" data-toggle="modal" data-target="#exampleModal">Cambiar Contraseña</a></li>
+                            <li><a href="javascript:void()" (click)="logout()">Cerrar Sesion</a></li>
                           </ul>
                       </li>
                       <li class="nav-devider"></li>
@@ -48,3 +45,33 @@
       <!-- ============================================================== -->
       <!-- End Left Sidebar - style you can find in sidebar.scss  -->
       <!-- ============================================================== -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Resetear Contraseña</h5>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label class="control-label">Contraseña actual <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+                    <input type="text" id="firstName" class="form-control" placeholder="Ingresar Contraseña actual" >
+                  </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label class="control-label">Contraseña nueva <i style="color: red; font-size: 12px;" class="fa fa-solid fa-star-of-life"></i></label>
+                      <input type="text" id="firstName" class="form-control" placeholder="Ingresar Contraseña nueva" >
+                    </div>
+                  </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Cambiar Contraseña</button>
+        </div>
+      </div>
+    </div>
+  </div>
