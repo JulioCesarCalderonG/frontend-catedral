@@ -28,4 +28,7 @@ export class NoticiaService {
   publicarNoticia(id:number,estado:string):Observable<any>{
     return this.http.delete(`${this.url}/${id}`,{params:{estado}});
   }
+  eliminarNoticia(id:number):Observable<any>{
+    return this.http.delete(`${this.url}/eliminar/${id}`);
+  }
 }

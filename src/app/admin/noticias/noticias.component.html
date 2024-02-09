@@ -27,6 +27,7 @@
         <th>Imagenes</th>
         <th>Editar</th>
         <th>Publicar</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -53,8 +54,13 @@
           </button>
         </td>
         <td *ngIf="noticia.estado===1">
-          <button class="btn btn-danger" (click)="publicarNoticia(noticia.id,0)">
+          <button class="btn btn-success" (click)="publicarNoticia(noticia.id,0)">
             <i class="fa fa-solid fa-download"></i>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="destroyNoticia(noticia.id)">
+            <i class="fa fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>
@@ -76,12 +82,12 @@
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Titulo</label>
-            <input type="text" id="firstName" class="form-control" placeholder="agregar un titulo"
+            <input type="text" id="firstName1" class="form-control" placeholder="agregar un titulo"
               formControlName="titulo">
           </div>
           <div class="form-group">
             <label class="control-label">Subtitulo</label>
-            <input type="text" id="firstName" class="form-control" placeholder="agregar un subtitulo"
+            <input type="text" id="firstName2" class="form-control" placeholder="agregar un subtitulo"
               formControlName="subtitulo">
           </div>
           <div class="form-group">
@@ -117,17 +123,17 @@
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Titulo</label>
-            <input type="text" id="firstName" class="form-control" placeholder="agregar un titulo"
+            <input type="text" id="firstName3" class="form-control" placeholder="agregar un titulo"
               formControlName="titulo">
           </div>
           <div class="form-group">
             <label class="control-label">Subtitulo</label>
-            <input type="text" id="firstName" class="form-control" placeholder="agregar un subtitulo"
+            <input type="text" id="firstName4" class="form-control" placeholder="agregar un subtitulo"
               formControlName="subtitulo">
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Descripcion</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"
+            <textarea class="form-control" id="exampleFormControlTextarea" rows="6"
               formControlName="descripcion"></textarea>
           </div>
         </div>

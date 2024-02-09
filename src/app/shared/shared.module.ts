@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { MapViewComponent } from './map-view/map-view.component';
 import { LoadingComponent } from './loading/loading.component';
 import { BtnBtnLocacionComponent } from './btn-btn-locacion/btn-btn-locacion.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -24,6 +25,7 @@ import { BtnBtnLocacionComponent } from './btn-btn-locacion/btn-btn-locacion.com
   imports: [
     CommonModule,
     RouterModule,
+    ReactiveFormsModule
   ],
   exports:[
     FooterComponent,

@@ -201,6 +201,36 @@ export class NoticiasComponent implements OnInit{
       }
     })
   }
+  destroyNoticia(id:number){
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "La noticia y sus imagenes seran eliminadas de manera permanente",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, seguro!',
+      cancelButtonText:'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.noticiaService.eliminarNoticia(id).subscribe({
+          next:(data)=>{
+            Swal.fire(
+              "Eliminado",
+              data.msg,
+              'success'
+            );
+            this.mostrarNoticias();
+          },
+          error:(error)=>{
+            console.log(error);
+
+          }
+        })
+
+      }
+    })
+  }
   capturarFile(event:any){
     this.uploadFiles = event.target.files;
     if (this.uploadFiles?.length===0) {
